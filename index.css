@@ -1,0 +1,181 @@
+:root {
+  --main: #060606;
+  --light: #888;
+  --bgcolor: #f2f4f7;
+}
+@font-face {
+  font-family: 'Belleza';
+  src: url('https://fonts.googleapis.com/css2?family=Belleza&display=swap');
+  font-weight: normal;
+  font-style: normal;
+}
+* {
+    box-sizing: border-box;
+  }
+body {
+    margin: 0;
+    background-color: var(--bgcolor);
+    font-family: 'Belleza';
+    letter-spacing: -1px;
+}
+a {
+    text-decoration: none; /* 기본 밑줄을 제거합니다 */
+    color: var(--light);
+  }
+  a:hover {
+    text-decoration: underline; /* 마우스 커서가 올라갔을 때 밑줄을 생성합니다*/
+  }
+h1 {
+  letter-spacing: 1.6px;
+}
+
+header {
+    background-image: linear-gradient(rgba(0, 0, 0, 0.327), rgba(0, 0, 0, 0.3)), url("images/cocktail-6403652_960_720.jpg");
+    background-size: cover;
+}
+header > div {
+  margin: auto;
+  width: 1320px;
+  height: 90vh;
+  display: flex;
+  justify-content: center;
+  align-items: center; /* 하위 요소들 수직 가운데정렬 */
+  position: relative;
+}
+/* nav */
+header > div > nav {
+    width: 1140px;
+    height: 50px;
+    margin: 40px;
+    padding: 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: absolute;
+    background-color: white;
+    opacity: 0.9;
+    top: 0;
+  }
+  .img_logo {
+    width: 300px;
+    font-size: 32px;
+    font-weight: bold;
+  }
+  .img_logo > a {
+    text-decoration: none;
+    color: var(--main);
+  }
+  .nav_items {
+    font-size: 16px;
+    font-weight: bold;
+  }
+  .nav_items ul > li {
+    display: inline-block;
+    margin-right: 20px;
+  }
+  .nav_items ul > li > a {
+    color: var(--main);
+    cursor: pointer;
+  }
+  .login {
+    display: flex;
+    justify-content: end;
+    flex-basis: 300px;
+    font-size: 16px;
+    font-weight: bold;
+  }
+header > div > div {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: white;
+  }
+  .headline {
+    margin-top: 60px;
+    text-align: center;
+    line-height: 60px;
+  }
+  .btn_header {
+    display:block;
+    width: 160px;
+    height: 50px;
+    margin: 20px auto;
+    background-color: transparent;
+    color: white;
+    font-size: 16px;
+    border: 1px solid white;
+    cursor: pointer; 
+    transition:all 0.3s;
+  }
+  .btn_header:hover {
+    color:var(--light);
+    background-color: white;
+    opacity: 0.9;
+  }
+
+main {
+    min-height: 1000px;
+  }
+  main > div {
+    margin: auto;
+    width: 1320px;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center; /* 하위 요소들 수직 가운데정렬 */
+    position: relative;
+  }
+  .main_title {
+    margin-top: 220px;
+    font-size: 24px;
+  }
+  .main_categories {
+    width: 1140px;
+    margin: 40px;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    }
+    .category_container {
+      display: inline-block;
+      height: 480px;
+      position: relative;
+      overflow: hidden;
+      transition: all 0.3s;
+      }
+      .category_container figure {
+        margin: 0;
+        margin-bottom: 10px;
+      }
+      .category_container figcaption {
+        width: 158px;
+        position: absolute;
+        top: 12px;
+        left: 0px;
+        padding: 4px 16px 4px 16px;
+        background: rgba(55, 55, 55, 0.5);
+        color: var(--bgcolor);
+        font-size: 36px;
+        transition: 0.5s;
+      }
+      .category_container:hover figcaption {
+        left: 328px;
+        background: transparent;
+        color: var(--main);
+        font-weight: bold;
+      }
+      .category_img {
+        width: 228px;
+        height: 480px;
+        object-fit: cover;
+        transition: all 0.3s;
+      }
+    
+      
+  
+footer {
+    background: darkgray;
+    height: 310px;
+}
