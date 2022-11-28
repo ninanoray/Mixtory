@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8'>
+    <title>MIXtory</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <link rel='stylesheet' type='text/css' media='screen' href='search.css'>
+</head>
+<body>
+    <header>
+        <section>
+            <nav>
+                <div class="img_logo">
+                    <a href="/">MIXtory</a>
+                </div>
+                <div class="nav_items">
+                  <ul>
+                    <li><a href="/search">칵테일 검색</a></li>
+                    <li><a href="/minibar">나만의 미니바</a></li>
+                    <li><a href="/community">커뮤니티</a></li>
+                    <li><a href="/notice">공지사항</a></li>
+                  </ul>
+                </div>
+                <div class="login">
+                    <% if(logio){ %>
+                        <a href="/logout">로그아웃</a>
+                    <% } else { %>
+                        <a href="/login">로그인</a>
+                    <% } %>
+                </div>
+            </nav>
+        </section>
+    </header>
+    <main>
+        <section>
+            <h1>List Page</h1>
+                <a href="/insert"><h1>INSERT DATA</h1></a><br>
+                <table width="100%" border="1">
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Model Number </th>
+                        <th>Seires</th>
+                        <th>EDIT</th>
+                        <th>DELETE</th>
+                    </tr>
+                    <% cdata.forEach(function(item, index) { %>
+                    <tr>
+                        <td><%= item.id %> </td>
+                        <td><%= item.name %> </td>
+                        <td><%= item.modelnumber %> </td>
+                        <td><%= item.series %> </td>
+                        <td><a href="/edit/<%= item.id %>">EDIT</a></td>
+                        <td><a href="/delete/<%= item.id %>">DELETE</a></td>
+                    </tr>
+                    <% }); %>
+                </table>
+                <a href="/"><h1>Home</h1></a>
+        </section>
+    </main>
+    <footer>
+        footer
+    </footer>
+</body>
+</html>
