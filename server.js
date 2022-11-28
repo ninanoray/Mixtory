@@ -29,22 +29,43 @@ function restrict(req, res, next) {
     next();
   } else {
     req.session.error = 'Access denied!';
-    res.sendFile(path.join(__dirname + '/my/login.html'));
+	res.writeHead(200, {
+		'Content-Type': 'text/html; charset=utf-8'
+	});
+    res.write("<script>alert('로그인이 필요합니다.')</script>");
+	res.write('<script>location.href = "/login";</script>');
+	res.end();
   }
 }
 
 app.use('/', function(request, response, next) {
-	if ( request.session.loggedin == true || request.url == "/login" || request.url == "/register" ) {
+	
+	if ( request.session.loggedin == true || request.url == "/login" || request.url == "/register"
+	 || request.url == "/minibar" || request.url == "/community" || request.url == "/search"
+	 || request.url == "/notice") {
     	next();
 	}
 	else {
-    	//response.sendFile(path.join(__dirname + '/my/login.html'));
-		response.sendFile(path.join(__dirname + '/my/index.html'));
+		//response.sendFile(path.join(__dirname + '/my/index.html'));
+		fs.readFile(__dirname + '/my/index.html', 'utf8', function (error, data) {
+			if (request.session.loggedin)
+				response.send(ejs.render(data, { data: true }));
+			else
+				response.send(ejs.render(data, { data: false }));
+		});
 	}
 });
 
+app.set('index engine','ejs');
+app.set('my','./my');
 app.get('/', function(request, response) {
-	response.sendFile(path.join(__dirname + '/my/index.html'));
+	//response.sendFile(path.join(__dirname + '/my/index.html'));
+	fs.readFile(__dirname + '/my/index.html', 'utf8', function (error, data) {
+		if (request.session.loggedin)
+			response.send(ejs.render(data, { data: true }));
+		else
+			response.send(ejs.render(data, { data: false }));
+	});
 });
 
 app.get('/login', function(request, response) {
@@ -60,11 +81,16 @@ app.post('/login', function(request, response) {
 			if (results.length > 0) {
 				request.session.loggedin = true;
 				request.session.username = username;
-				response.redirect('/home');
+				response.redirect('/');
 				response.end();
 			} else {
 				//response.send('Incorrect Username and/or Password!');
-				response.sendFile(path.join(__dirname + '/my/loginerror.html'));
+				response.writeHead(200, {
+					'Content-Type': 'text/html; charset=utf-8'
+				});
+				response.write("<script>alert('ID/비밀번호를 다시 입력해주세요.')</script>");
+				response.write('<script>location.href = "/login";</script>');
+				//response.sendFile(path.join(__dirname + '/my/loginerror.html'));
 			}			
 		});
 	} else {
@@ -94,9 +120,9 @@ app.post('/register', function(request, response) {
                 else
                   console.log(data);
         });
-			  response.send(username + ' Registered Successfully!<br><a href="/home">Home</a>');
+			  response.send(username + ' Registered Successfully!<br><a href="/">Home</a>');
 			} else {
-				response.send(username + ' Already exists!<br><a href="/home">Home</a>');
+				response.send(username + ' Already exists!<br><a href="/">Home</a>');
 			}			
 			response.end();
 		});
@@ -108,47 +134,73 @@ app.post('/register', function(request, response) {
 
 app.get('/logout', function(request, response) {
   request.session.loggedin = false;
-	response.send('<center><H1>Logged Out.</H1><H1><a href="/">Goto Home</a></H1></center>');
+	//response.send('<center><H1>Logged Out.</H1><H1><a href="/">Goto Home</a></H1></center>');
+	response.writeHead(200, {
+		'Content-Type': 'text/html; charset=utf-8'
+	});
+	response.write("<script>alert('로그아웃')</script>");
+	response.write('<script>location.href = "/";</script>');
 	response.end();
 });
 
-app.get('/home', function(request, response) {
-	response.sendFile(path.join(__dirname + '/my/index.html'));
+app.get('/search', function(request, response) {
+	fs.readFile(__dirname + '/public/search.html', 'utf8', function (error, data) {
+		if (request.session.loggedin) {
+			response.send(ejs.render(data, { data: true }));
+		}
+		else
+			response.send(ejs.render(data, { data: false }));
+			response.end();
+	});
 });
-// app.get('/home', restrict, function(request, response) {
-// 	if (request.session.loggedin) {
-// 		response.sendFile(path.join(__dirname + '/my/index.html'));
-// 	} else {
-// 		response.send('Please login to view this page!');
-// 		response.end();
-// 	}
-// });
-// app.get('/test2', function(request, response) {
-// 	if (request.session.loggedin) {
-// 		response.sendFile(path.join(__dirname + '/my/test2.html'));
-// 	} else {
-// 		response.send('Please login to view this page!');
-// 		response.end();
-// 	}
-// });
+
 app.get('/minibar', restrict, function(request, response) {
-	if (request.session.loggedin) {
-		response.sendFile(path.join(__dirname + '/my/minibar.html'));
-	} else {
-		response.send('<script>alert("로그인이 필요합니다.");</script>');
-		response.end();
-	}
+	fs.readFile(__dirname + '/my/minibar.html', 'utf8', function (error, data) {
+		if (request.session.loggedin) {
+			response.send(ejs.render(data, { data: true }));
+		}
+		else
+			response.send(ejs.render(data, { data: false }));
+			//response.send('login!');
+			response.end();
+	});
+	// if (request.session.loggedin) {
+	// 	response.sendFile(path.join(__dirname + '/my/minibar.html'));
+	// } else {
+	// 	response.send('login!');
+	// 	response.end();
+	// }
 });
+
 app.get('/community', restrict, function(request, response) {
-	if (request.session.loggedin) {
-		response.sendFile(path.join(__dirname + '/my/community.html'));
-	} else {
-		response.send('<script type="text/javascript">alert("로그인이 필요합니다.");</script>');
-		response.end();
-	}
+	fs.readFile(__dirname + '/my/community.html', 'utf8', function (error, data) {
+		if (request.session.loggedin) {
+			response.send(ejs.render(data, { data: true }));
+		}
+		else
+			response.send(ejs.render(data, { data: false }));
+			//response.send('login!');
+			response.end();
+	});
+	// if (request.session.loggedin) {
+	// 	response.sendFile(path.join(__dirname + '/my/community.html'));
+	// } else {
+	// 	response.send('login!');
+	// 	response.end();
+	// }
 });
 
-
+app.get('/notice', function(request, response) {
+	fs.readFile(__dirname + '/public/notice.html', 'utf8', function (error, data) {
+		if (request.session.loggedin) {
+			response.send(ejs.render(data, { data: true }));
+		}
+		else
+			response.send(ejs.render(data, { data: false }));
+			//response.send('login!');
+			response.end();
+	});
+});
 
 // Board
 app.get('/board', function (request, response) { 

@@ -13,18 +13,22 @@
         <section>
             <nav>
                 <div class="img_logo">
-                    <a href="/home">MIXtory</a>
+                    <a href="/">MIXtory</a>
                 </div>
                 <div class="nav_items">
                   <ul>
-                    <li><a href="/search.html">칵테일 검색</a></li>
+                    <li><a href="/search">칵테일 검색</a></li>
                     <li><a href="/minibar">나만의 미니바</a></li>
                     <li><a href="/community">커뮤니티</a></li>
-                    <li><a href="/notice.html">공지사항</a></li>
+                    <li><a href="/notice">공지사항</a></li>
                   </ul>
                 </div>
                 <div class="login">
-                    <a href="/login">로그인</a></li>
+                    <% if(data){ %>
+                        <a href="/logout">로그아웃</a>
+                    <% } else { %>
+                        <a href="/login">로그인</a>
+                    <% } %>
                 </div>
             </nav>
         </section>
