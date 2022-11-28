@@ -34,28 +34,25 @@
     <main>
         <section>
             <h1>List Page</h1>
-                <a href="/insert"><h1>INSERT DATA</h1></a><br>
-                <table width="100%" border="1">
-                    <tr>
-                        <th>ID</th>
-                        <th>Name</th>
-                        <th>Model Number </th>
-                        <th>Seires</th>
-                        <th>EDIT</th>
-                        <th>DELETE</th>
-                    </tr>
-                    <% cdata.forEach(function(item, index) { %>
-                    <tr>
-                        <td><%= item.id %> </td>
-                        <td><%= item.name %> </td>
-                        <td><%= item.modelnumber %> </td>
-                        <td><%= item.series %> </td>
-                        <td><a href="/edit/<%= item.id %>">EDIT</a></td>
-                        <td><a href="/delete/<%= item.id %>">DELETE</a></td>
-                    </tr>
-                    <% }); %>
+            <h2><a href="/insert">칵테일 추가</a></h2>
+            <table width="100%" border="1">
+                <tr>
+                    <th>이름</th>
+                    <th>영문</th>
+                    <th>기법</th>
+                    <th>EDIT</th>
+                    <th>DELETE</th>
+                </tr>
+                <% cdata.forEach(function(item, index) { %>
+                <tr>
+                    <td><%= item.name %></td>
+                    <td><%= item.enname %></td>
+                    <td><%= item.method %></td>
+                    <td><a href="/edit/<%= item.id %>">EDIT</a></td>
+                    <td><a href="/delete/<%= item.id %>">DELETE</a></td>
+                </tr>
+                <% }); %>
                 </table>
-                <a href="/"><h1>Home</h1></a>
         </section>
     </main>
     <footer>

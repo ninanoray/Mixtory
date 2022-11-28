@@ -33,9 +33,28 @@
     </header>
     <main>
         <section>
-            <div>
-                나만의 미니바
-            </div>
+            <h1>List Page</h1>
+            <table width="100%" border="1">
+                <tr>
+                    <th>번호</th>
+                    <th>제품명</th>
+                    <th>타입</th>
+                    <th>카테고리</th>
+                    <th>구매링크</th>
+                    <th>DELETE</th>
+                </tr>
+                <% cdata.forEach(function(item, index) { %>
+                <tr>
+                    <td><%= item.id %> </td>
+                    <td><%= item.name %> </td>
+                    <td><%= item.type %> </td>
+                    <td><%= item.category %> </td>
+                    <td><a href="<%= item.url %>"><%= item.name %> 구매링크</a> </td>
+                    <td><a href="/minibar/delete/<%= item.id %>">DELETE</a></td>
+                </tr>
+                <% }); %>
+            </table>
+            <a href="/"><h1>Home</h1></a>
         </section>
     </main>
     <footer>
