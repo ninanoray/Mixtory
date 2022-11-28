@@ -42,16 +42,16 @@ app.use('/', function(request, response, next) {
 	
 	if ( request.session.loggedin == true || request.url == "/login" || request.url == "/register"
 	 || request.url == "/minibar" || request.url == "/community" || request.url == "/search"
-	 || request.url == "/notice") {
+	 || request.url == "/notice" || request.url == "/board") {
     	next();
 	}
 	else {
 		//response.sendFile(path.join(__dirname + '/my/index.html'));
-		fs.readFile(__dirname + '/my/index.html', 'utf8', function (error, data) {
+		fs.readFile(__dirname + '/my/index.html', 'utf8', function (error, logio) {
 			if (request.session.loggedin)
-				response.send(ejs.render(data, { data: true }));
+				response.send(ejs.render(logio, { logio: true }));
 			else
-				response.send(ejs.render(data, { data: false }));
+				response.send(ejs.render(logio, { logio: false }));
 		});
 	}
 });
@@ -60,11 +60,11 @@ app.set('index engine','ejs');
 app.set('my','./my');
 app.get('/', function(request, response) {
 	//response.sendFile(path.join(__dirname + '/my/index.html'));
-	fs.readFile(__dirname + '/my/index.html', 'utf8', function (error, data) {
+	fs.readFile(__dirname + '/my/index.html', 'utf8', function (error, logio) {
 		if (request.session.loggedin)
-			response.send(ejs.render(data, { data: true }));
+			response.send(ejs.render(logio, { logio: true }));
 		else
-			response.send(ejs.render(data, { data: false }));
+			response.send(ejs.render(logio, { logio: false }));
 	});
 });
 
@@ -143,62 +143,24 @@ app.get('/logout', function(request, response) {
 	response.end();
 });
 
+// 칵테일 검색
 app.get('/search', function(request, response) {
 	fs.readFile(__dirname + '/public/search.html', 'utf8', function (error, data) {
+		let is_logged_in;
 		if (request.session.loggedin) {
-			response.send(ejs.render(data, { data: true }));
+			is_logged_in = true;
+			// 아래 주석처리한 것처럼의 형태는 동작을 안함
+			//response.send(ejs.render(data, { logio: true }));
 		}
-		else
-			response.send(ejs.render(data, { data: false }));
-			response.end();
-	});
-});
+		else {
+			is_logged_in = false;
+			//response.send(ejs.render(data, { logio: false }));
+		}
 
-app.get('/minibar', restrict, function(request, response) {
-	fs.readFile(__dirname + '/my/minibar.html', 'utf8', function (error, data) {
-		if (request.session.loggedin) {
-			response.send(ejs.render(data, { data: true }));
-		}
-		else
-			response.send(ejs.render(data, { data: false }));
-			//response.send('login!');
-			response.end();
-	});
-	// if (request.session.loggedin) {
-	// 	response.sendFile(path.join(__dirname + '/my/minibar.html'));
-	// } else {
-	// 	response.send('login!');
-	// 	response.end();
-	// }
-});
-
-app.get('/community', restrict, function(request, response) {
-	fs.readFile(__dirname + '/my/community.html', 'utf8', function (error, data) {
-		if (request.session.loggedin) {
-			response.send(ejs.render(data, { data: true }));
-		}
-		else
-			response.send(ejs.render(data, { data: false }));
-			//response.send('login!');
-			response.end();
-	});
-	// if (request.session.loggedin) {
-	// 	response.sendFile(path.join(__dirname + '/my/community.html'));
-	// } else {
-	// 	response.send('login!');
-	// 	response.end();
-	// }
-});
-
-app.get('/notice', function(request, response) {
-	fs.readFile(__dirname + '/public/notice.html', 'utf8', function (error, data) {
-		if (request.session.loggedin) {
-			response.send(ejs.render(data, { data: true }));
-		}
-		else
-			response.send(ejs.render(data, { data: false }));
-			//response.send('login!');
-			response.end();
+		connection.query('SELECT * FROM products', function (error, results) {
+			// 응답합니다
+			response.send(ejs.render(data, { cdata : results, logio: is_logged_in}));
+		});
 	});
 });
 
@@ -219,12 +181,11 @@ app.get('/delete/:id', function (request, response) {
     // 
     connection.query('DELETE FROM products WHERE id=?', [request.param('id')], function () {
         // ÀÀ´äÇÕ´Ï´Ù.
-        response.redirect('/board');
+		response.redirect('/search');
     });
 });
 app.get('/insert', function (request, response) {	
-    // 
-    fs.readFile(__dirname + '/board/insert.html', 'utf8', function (error, data) {
+	fs.readFile(__dirname + '/board/insert.html', 'utf8', function (error, data) {
         // ÀÀ´äÇÕ´Ï´Ù.
         response.send(data);
     });
@@ -238,12 +199,12 @@ app.post('/insert', function (request, response) {
         body.name, body.modelnumber, body.series
     ], function () {
         // ÀÀ´äÇÕ´Ï´Ù.
-        response.redirect('/board');
+		response.redirect('/search');
     });
 });
 app.get('/edit/:id', function (request, response) {
 	    // ÆÄÀÏÀ» ÀÐ½À´Ï´Ù.
-    fs.readFile(__dirname + '/board/edit.html', 'utf8', function (error, data) {
+	fs.readFile(__dirname + '/board/edit.html', 'utf8', function (error, data) {
         // µ¥ÀÌÅÍº£ÀÌ½º Äõ¸®¸¦ ½ÇÇàÇÕ´Ï´Ù.
         connection.query('SELECT * FROM products WHERE id = ?', [
             request.param('id')
@@ -264,8 +225,51 @@ app.post('/edit/:id', function (request, response) {
         body.name, body.modelnumber, body.series, request.param('id')
     ], function () {
         // ÀÀ´äÇÕ´Ï´Ù.
-        response.redirect('/board');
+		response.redirect('/search');
     });
+});
+
+// 나만의 미니바
+app.get('/minibar', restrict, function(request, response) {
+	fs.readFile(__dirname + '/my/minibar.html', 'utf8', function (error, data) {
+		if (request.session.loggedin) {
+			response.send(ejs.render(data, { logio: true }));
+		}
+		else
+			response.send(ejs.render(data, { logio: false }));
+			//response.send('login!');
+			response.end();
+	});
+	// if (request.session.loggedin) {
+	// 	response.sendFile(path.join(__dirname + '/my/minibar.html'));
+	// } else {
+	// 	response.send('login!');
+	// 	response.end();
+	// }
+});
+
+// 커뮤니티
+app.get('/community', restrict, function(request, response) {
+	fs.readFile(__dirname + '/my/community.html', 'utf8', function (error, data) {
+		if (request.session.loggedin) {
+			response.send(ejs.render(data, { logio: true }));
+		}
+		else
+			response.send(ejs.render(data, { logio: false }));
+			response.end();
+	});
+});
+
+// 공지사항
+app.get('/notice', function(request, response) {
+	fs.readFile(__dirname + '/public/notice.html', 'utf8', function (error, data) {
+		if (request.session.loggedin) {
+			response.send(ejs.render(data, { logio: true }));
+		}
+		else
+			response.send(ejs.render(data, { logio: false }));
+			response.end();
+	});
 });
 
 

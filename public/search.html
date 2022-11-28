@@ -2,11 +2,9 @@
 <html>
 <head>
     <meta charset='utf-8'>
-    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
     <title>MIXtory</title>
     <meta name='viewport' content='width=device-width, initial-scale=1'>
     <link rel='stylesheet' type='text/css' media='screen' href='search.css'>
-    <script src='main.js'></script>
 </head>
 <body>
     <header>
@@ -24,7 +22,7 @@
                   </ul>
                 </div>
                 <div class="login">
-                    <% if(data){ %>
+                    <% if(logio){ %>
                         <a href="/logout">로그아웃</a>
                     <% } else { %>
                         <a href="/login">로그인</a>
@@ -35,9 +33,29 @@
     </header>
     <main>
         <section>
-            <div>
-                칵테일 검색
-            </div>
+            <h1>List Page</h1>
+                <a href="/insert"><h1>INSERT DATA</h1></a><br>
+                <table width="100%" border="1">
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Model Number </th>
+                        <th>Seires</th>
+                        <th>EDIT</th>
+                        <th>DELETE</th>
+                    </tr>
+                    <% cdata.forEach(function(item, index) { %>
+                    <tr>
+                        <td><%= item.id %> </td>
+                        <td><%= item.name %> </td>
+                        <td><%= item.modelnumber %> </td>
+                        <td><%= item.series %> </td>
+                        <td><a href="/edit/<%= item.id %>">EDIT</a></td>
+                        <td><a href="/delete/<%= item.id %>">DELETE</a></td>
+                    </tr>
+                    <% }); %>
+                </table>
+                <a href="/"><h1>Home</h1></a>
         </section>
     </main>
     <footer>
