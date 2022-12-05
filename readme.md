@@ -1,7 +1,7 @@
 [Notion : 개발노트 링크](https://www.notion.so/Mixtory-381dbffb662749c2b121aa48f0cb0367)
 
 # Mixtory 개발 노트
-
+<br/>
 ## 프로젝트 기획
 ### 메인 페이지
 
@@ -17,13 +17,14 @@
 
 - 회원 가입 페이지, 글쓰기 페이지, 내가 ‘좋아요’한 칵테일 페이지, 내가 쓴 글 페이지 등
 
+<br/><br/><br/>
 
 ## DB 설계
 ![image](https://user-images.githubusercontent.com/77103814/205563161-cb957bd8-e723-4eb5-a500-9953934f2edd.png)
 
 [ERD : DB 다이어그램 링크](https://www.erdcloud.com/d/mheqRxKdZbDA4kSLh)
 
-
+<br/><br/><br/>
 
 ## 구현 화면
 
