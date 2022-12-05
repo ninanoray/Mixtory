@@ -1,4 +1,4 @@
-[노션](https://www.notion.so/Mixtory-381dbffb662749c2b121aa48f0cb0367)
+[노션 : 개발노트 링크](https://www.notion.so/Mixtory-381dbffb662749c2b121aa48f0cb0367)
 
 # Mixtory 개발 노트
 
