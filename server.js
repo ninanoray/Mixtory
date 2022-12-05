@@ -42,7 +42,7 @@ app.use('/', function(request, response, next) {
 	
 	if ( request.session.loggedin == true || request.url == "/login" || request.url == "/register"
 	 || request.url == "/minibar" || request.url == "/community" || request.url == "/search"
-	 || request.url == "/notice" || request.url == "/board") {
+	 || request.url == "/notice") {
     	next();
 	}
 	else {
@@ -84,13 +84,11 @@ app.post('/login', function(request, response) {
 				response.redirect('/');
 				response.end();
 			} else {
-				//response.send('Incorrect Username and/or Password!');
 				response.writeHead(200, {
 					'Content-Type': 'text/html; charset=utf-8'
 				});
 				response.write("<script>alert('ID/비밀번호를 다시 입력해주세요.')</script>");
 				response.write('<script>location.href = "/login";</script>');
-				//response.sendFile(path.join(__dirname + '/my/loginerror.html'));
 			}			
 		});
 	} else {
@@ -157,95 +155,91 @@ app.get('/search', function(request, response) {
 			//response.send(ejs.render(data, { logio: false }));
 		}
 
-		connection.query('SELECT * FROM products', function (error, results) {
+		connection.query('SELECT * FROM Cocktails', function (error, results) {
 			// 응답합니다
 			response.send(ejs.render(data, { cdata : results, logio: is_logged_in}));
 		});
 	});
 });
-
-// Board
-app.get('/board', function (request, response) { 
-    // 파일을 읽습니다
-    fs.readFile(__dirname + '/board/list.html', 'utf8', function (error, data) {
-        // 데이터베이스 쿼리를 실행합니다
-        connection.query('SELECT * FROM products', function (error, results) {
-            // 응답합니다
-            response.send(ejs.render(data, {
-                data: results
-            }));
-        });
-    });
-});
 app.get('/delete/:id', function (request, response) { 
-    // 
-    connection.query('DELETE FROM products WHERE id=?', [request.param('id')], function () {
-        // ÀÀ´äÇÕ´Ï´Ù.
+    connection.query('DELETE FROM Cocktails WHERE id=?', [request.param('id')], function () {
 		response.redirect('/search');
     });
 });
 app.get('/insert', function (request, response) {	
 	fs.readFile(__dirname + '/board/insert.html', 'utf8', function (error, data) {
-        // ÀÀ´äÇÕ´Ï´Ù.
         response.send(data);
     });
 });
 app.post('/insert', function (request, response) {
-    // º¯¼ö¸¦ ¼±¾ðÇÕ´Ï´Ù.
     var body = request.body;
 
-    // µ¥ÀÌÅÍº£ÀÌ½º Äõ¸®¸¦ ½ÇÇàÇÕ´Ï´Ù.
-    connection.query('INSERT INTO products (name, modelnumber, series) VALUES (?, ?, ?)', [
-        body.name, body.modelnumber, body.series
+    connection.query('INSERT INTO Cocktails (name, enname, method) VALUES (?, ?, ?)', [
+        body.name, body.enname, body.method
     ], function () {
-        // ÀÀ´äÇÕ´Ï´Ù.
 		response.redirect('/search');
     });
 });
-app.get('/edit/:id', function (request, response) {
-	    // ÆÄÀÏÀ» ÀÐ½À´Ï´Ù.
+app.get('/edit/:name', function (request, response) {
 	fs.readFile(__dirname + '/board/edit.html', 'utf8', function (error, data) {
-        // µ¥ÀÌÅÍº£ÀÌ½º Äõ¸®¸¦ ½ÇÇàÇÕ´Ï´Ù.
-        connection.query('SELECT * FROM products WHERE id = ?', [
-            request.param('id')
-        ], function (error, result) {
-            // ÀÀ´äÇÕ´Ï´Ù.
-            response.send(ejs.render(data, {
-                data: result[0]
-            }));
+		let is_logged_in;
+		if (request.session.loggedin) {
+			is_logged_in = true;
+		}
+		else {
+			is_logged_in = false;
+		}
+        connection.query('SELECT * FROM Recipes WHERE name = ?', [ request.param('name') ],
+		 function (error, results) {
+            response.send(ejs.render(data, { cdata: results, logio: is_logged_in }));
         });
     });
 });
-app.post('/edit/:id', function (request, response) {
-	    // º¯¼ö¸¦ ¼±¾ðÇÕ´Ï´Ù.
+app.post('/edit/:name', function (request, response) {
     var body = request.body
 
-    // µ¥ÀÌÅÍº£ÀÌ½º Äõ¸®¸¦ ½ÇÇàÇÕ´Ï´Ù.
-    connection.query('UPDATE products SET name=?, modelnumber=?, series=? WHERE id=?', [
-        body.name, body.modelnumber, body.series, request.param('id')
+    connection.query('UPDATE Recipes SET igdcategory=?, amount=? WHERE name=?', [
+        body.igdcategory, body.amount, request.param('name')
     ], function () {
-        // ÀÀ´äÇÕ´Ï´Ù.
 		response.redirect('/search');
+    });
+});
+app.get('/show/:name', function (request, response) {
+	fs.readFile(__dirname + '/board/recipes.html', 'utf8', function (error, data) {
+		let is_logged_in;
+		if (request.session.loggedin) {
+			is_logged_in = true;
+		}
+		else {
+			is_logged_in = false;
+		}
+        connection.query('SELECT * FROM Recipes WHERE name = ?', [ request.param('name') ],
+		 function (error, results) {
+            response.send(ejs.render(data, { cdata: results, logio: is_logged_in }));
+        });
     });
 });
 
 // 나만의 미니바
 app.get('/minibar', restrict, function(request, response) {
 	fs.readFile(__dirname + '/my/minibar.html', 'utf8', function (error, data) {
-		if (request.session.loggedin) {
-			response.send(ejs.render(data, { logio: true }));
-		}
+		let is_logged_in;
+		if (request.session.loggedin)
+			is_logged_in = true;
 		else
-			response.send(ejs.render(data, { logio: false }));
-			//response.send('login!');
-			response.end();
+			is_logged_in = false;
+
+		connection.query('SELECT * FROM Ingredients', function (error, results) {
+			// 응답합니다
+			response.send(ejs.render(data, { cdata : results, logio: is_logged_in}));
+		});
 	});
-	// if (request.session.loggedin) {
-	// 	response.sendFile(path.join(__dirname + '/my/minibar.html'));
-	// } else {
-	// 	response.send('login!');
-	// 	response.end();
-	// }
+});
+app.get('/minibar/delete/:id', function (request, response) { 
+    // 
+    connection.query('DELETE FROM Ingredients WHERE id=?', [request.param('id')], function () {
+		response.redirect('/minibar');
+    });
 });
 
 // 커뮤니티
@@ -274,5 +268,5 @@ app.get('/notice', function(request, response) {
 
 
 app.listen(3000, function () {
-    console.log('Server Running at http://127.0.0.1:3000');
+    console.log('Server Running at localhost:3000');
 });

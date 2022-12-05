@@ -33,9 +33,31 @@
     </header>
     <main>
         <section>
-            <div>
-                나만의 미니바
+            <div class="title">
+                <h1>나만의 미니바</h1>
             </div>
+            <table width="100%" border="1">
+                <thead>
+                    <tr>
+                        <th>번호</th>
+                        <th>제품명</th>
+                        <th>타입</th>
+                        <th>카테고리</th>
+                        <th>구매링크</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% cdata.forEach(function(item, index) { %>
+                    <tr>
+                        <td class="center_cell"><%= item.id %> </td>
+                        <td><%= item.name %> </td>
+                        <td class="center_cell"><%= item.type %> </td>
+                        <td><%= item.category %> </td>
+                        <td><a href="<%= item.url %>"><%= item.name %> 구매링크</a> </td>
+                    </tr>
+                    <% }); %>
+                </tbody>
+            </table>
         </section>
     </main>
     <footer>

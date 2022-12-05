@@ -109,10 +109,17 @@ header > div > div {
     transition:all 0.3s;
   }
   .btn_header:hover {
-    color:var(--light);
     background-color: white;
     opacity: 0.9;
   }
+  .btn_header:hover a {
+    color:var(--light);
+  }
+  .btn_header > a {
+    color: var(--bgcolor);
+    text-decoration: none;
+  }
+  
 
 main {
     min-height: 1000px;
@@ -155,7 +162,6 @@ main {
         top: 12px;
         left: 0px;
         padding: 4px 16px 4px 16px;
-        background: rgba(55, 55, 55, 0.5);
         color: var(--bgcolor);
         font-size: 36px;
         transition: 0.5s;

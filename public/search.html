@@ -33,29 +33,29 @@
     </header>
     <main>
         <section>
-            <h1>List Page</h1>
-                <a href="/insert"><h1>INSERT DATA</h1></a><br>
-                <table width="100%" border="1">
+            <div class="title">
+                <h1>칵테일 리스트</h1>
+            </div>
+            <table width="100%" border="1">
+                <thead>
                     <tr>
-                        <th>ID</th>
-                        <th>Name</th>
-                        <th>Model Number </th>
-                        <th>Seires</th>
-                        <th>EDIT</th>
-                        <th>DELETE</th>
+                        <th>이름</th>
+                        <th>영문</th>
+                        <th>기법</th>
+                        <th>레시피 보기</th>
                     </tr>
+                </thead>
+                <tbody>
                     <% cdata.forEach(function(item, index) { %>
                     <tr>
-                        <td><%= item.id %> </td>
-                        <td><%= item.name %> </td>
-                        <td><%= item.modelnumber %> </td>
-                        <td><%= item.series %> </td>
-                        <td><a href="/edit/<%= item.id %>">EDIT</a></td>
-                        <td><a href="/delete/<%= item.id %>">DELETE</a></td>
+                        <td><%= item.name %></td>
+                        <td><%= item.enname %></td>
+                        <td class="center_cell"><%= item.method %></td>
+                        <td class="center_cell"><a href="/show/<%= item.name %>">보기</a></td>
                     </tr>
                     <% }); %>
-                </table>
-                <a href="/"><h1>Home</h1></a>
+                </tbody>
+            </table>
         </section>
     </main>
     <footer>
