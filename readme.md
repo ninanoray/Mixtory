@@ -19,14 +19,14 @@
 
 - 회원 가입 페이지, 글쓰기 페이지, 내가 ‘좋아요’한 칵테일 페이지, 내가 쓴 글 페이지 등
 
-<br/><br/><br/>
+<br/><br/>
 
 ## 2. DB 설계
 ![image](https://user-images.githubusercontent.com/77103814/205563161-cb957bd8-e723-4eb5-a500-9953934f2edd.png)
 
 [ERD : DB 다이어그램 링크](https://www.erdcloud.com/d/mheqRxKdZbDA4kSLh)
 
-<br/><br/><br/>
+<br/><br/>
 
 ## 3. 구현 화면
 
