@@ -1,7 +1,9 @@
 [Notion : 개발노트 링크](https://www.notion.so/Mixtory-381dbffb662749c2b121aa48f0cb0367)
 
 # Mixtory 개발 노트
+
 <br/>
+
 ## 프로젝트 기획
 ### 메인 페이지
 
