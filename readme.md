@@ -4,7 +4,7 @@
 
 <br/>
 
-## 프로젝트 기획
+## 1. 프로젝트 기획
 ### 메인 페이지
 
 - 메인 홈페이지 : 로그인 기능, 다른 페이지 이동, 메인 화면
@@ -21,14 +21,14 @@
 
 <br/><br/><br/>
 
-## DB 설계
+## 1. DB 설계
 ![image](https://user-images.githubusercontent.com/77103814/205563161-cb957bd8-e723-4eb5-a500-9953934f2edd.png)
 
 [ERD : DB 다이어그램 링크](https://www.erdcloud.com/d/mheqRxKdZbDA4kSLh)
 
 <br/><br/><br/>
 
-## 구현 화면
+## 1. 구현 화면
 
 ### 홈(메인) 페이지
 
