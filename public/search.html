@@ -47,13 +47,13 @@
                 </thead>
                 <tbody>
                     <% cdata.forEach(function(item, index) { %>
-                        <tr>
-                            <td><%= item.name %></td>
-                            <td><%= item.enname %></td>
-                            <td><%= item.method %></td>
-                            <td><a href="/show/<%= item.name %>">SHOW</a></td>
-                        </tr>
-                        <% }); %>
+                    <tr>
+                        <td><%= item.name %></td>
+                        <td><%= item.enname %></td>
+                        <td class="center_cell"><%= item.method %></td>
+                        <td class="center_cell"><a href="/show/<%= item.name %>">SHOW</a></td>
+                    </tr>
+                    <% }); %>
                 </tbody>
             </table>
         </section>

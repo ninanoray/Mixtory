@@ -126,6 +126,7 @@ main {
     }
     table {
         width: 1140px;
+        margin-bottom: 220px;
         border-collapse: collapse;
         text-align: left;
         line-height: 1.5;
@@ -142,24 +143,20 @@ main {
         border-bottom: 3px solid var(--main);
         text-align: center;
       }
-      table tbody th {
-        width: 150px;
-        padding: 10px;
-        font-weight: bold;
-        vertical-align: top;
+      table tr {
         border: none;
         box-shadow: none;
-        border-bottom: 1px solid #ccc;
-        background: #f3f6f7;
       }
       table td {
-        width: 350px;
         padding: 10px;
         vertical-align: top;
         border: none;
         box-shadow: none;
-        border-bottom: 1px solid #ccc;
-      }
+        }
+        .center_cell {
+            text-align: center;
+        }
+
 
 footer {
     background: darkgray;
