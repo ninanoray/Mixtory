@@ -26,13 +26,17 @@
 색 및 정보 페이지에서 칵테일 검색 및 정보 페이지로 이동 가능한 버튼 필요
 - 유저가 새로운 칵테일을 추가할 수 있게 하는 기능 고민 중
 
+
+
 ## DB 설계
 
 ![DB of Mixtory.png](Mixtory%20%E1%84%80%E1%85%A2%E1%84%87%E1%85%A1%E1%86%AF%20%E1%84%82%E1%85%A9%E1%84%90%E1%85%B3%20381dbffb662749c2b121aa48f0cb0367/DB_of_Mixtory.png)
 
 [Copy of Mixtory](https://www.erdcloud.com/d/mheqRxKdZbDA4kSLh)
 
-# 구현 화면
+
+
+## 구현 화면
 
 ### 홈(메인) 페이지
 
