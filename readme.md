@@ -29,8 +29,7 @@
 
 
 ## DB 설계
-
-![DB of Mixtory.png](Mixtory%20%E1%84%80%E1%85%A2%E1%84%87%E1%85%A1%E1%86%AF%20%E1%84%82%E1%85%A9%E1%84%90%E1%85%B3%20381dbffb662749c2b121aa48f0cb0367/DB_of_Mixtory.png)
+![image](https://user-images.githubusercontent.com/77103814/205563161-cb957bd8-e723-4eb5-a500-9953934f2edd.png)
 
 [Copy of Mixtory](https://www.erdcloud.com/d/mheqRxKdZbDA4kSLh)
 
