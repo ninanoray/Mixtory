@@ -7,7 +7,7 @@ var bodyParser = require('body-parser');
 var ejs = require('ejs');
 
 var connection = mysql.createConnection({
-	host     : 'localhost',
+	host     : '127.0.0.1',
 	user     : 'web2022',
 	password : 'web2022',
 	database : 'web'
@@ -23,6 +23,10 @@ app.use(session({
 app.use(express.static('public'));
 app.use(bodyParser.urlencoded({extended : true}));
 app.use(bodyParser.json());
+
+app.listen(34754, function () {
+    console.log('Server Running at 127.0.0.1:34754');
+});
 
 function restrict(req, res, next) {
   if (req.session.loggedin) {
@@ -264,9 +268,4 @@ app.get('/notice', function(request, response) {
 			response.send(ejs.render(data, { logio: false }));
 			response.end();
 	});
-});
-
-
-app.listen(3000, function () {
-    console.log('Server Running at localhost:3000');
 });

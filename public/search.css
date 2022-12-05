@@ -114,21 +114,24 @@ main {
         margin: auto;
         width: 1320px;
         min-height: 80vh;
+        margin-bottom: 220px;
         display: flex;
         flex-direction: column;
         justify-content: space-around;
         align-items: center; /* 하위 요소들 수직 가운데정렬 */
         position: relative;
     }
-    .title {
-        margin-top: 40px;
+    main .title {
+        margin-top: 80px;
+        margin-bottom: 40px;
         font-size: 24px;
     }
-    main .btn_eidt button  {
-        display:block;
+    main .btn_eidt {
+        margin: 120px;
+    }
+    main .btn_eidt button {
         width: 160px;
         height: 50px;
-        margin: 20px auto;
         background-color: transparent;
         color: var(--main);
         font-size: 16px;
@@ -149,7 +152,6 @@ main {
         }
     table {
         width: 1140px;
-        margin-bottom: 220px;
         border-collapse: collapse;
         text-align: left;
         line-height: 1.5;
@@ -158,21 +160,19 @@ main {
       table thead th {
         padding: 10px;
         font-weight: bold;
+        font-size: 24px;
         vertical-align: top;
         color: var(--main);
         border: none;
         border-bottom: 3px solid var(--main);
         text-align: center;
       }
-      table tr {
-        border: none;
-      }
       table td {
         padding: 10px;
         vertical-align: top;
         border: none;
         }
-        .center_cell {
+        table .center_cell {
             text-align: center;
         }
     input {
