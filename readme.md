@@ -39,6 +39,6 @@
 
 ### 홈(메인) 페이지
 
-![Untitled](Mixtory%20%E1%84%80%E1%85%A2%E1%84%87%E1%85%A1%E1%86%AF%20%E1%84%82%E1%85%A9%E1%84%90%E1%85%B3%20381dbffb662749c2b121aa48f0cb0367/Untitled.png)
+![image](https://user-images.githubusercontent.com/77103814/205563213-13cc70c2-aecf-49e0-85eb-3d578b868789.png)
+![image](https://user-images.githubusercontent.com/77103814/205563257-9e2bed34-a402-4060-95e4-6effa38c5546.png)
 
-![Untitled](Mixtory%20%E1%84%80%E1%85%A2%E1%84%87%E1%85%A1%E1%86%AF%20%E1%84%82%E1%85%A9%E1%84%90%E1%85%B3%20381dbffb662749c2b121aa48f0cb0367/Untitled%201.png)
