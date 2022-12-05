@@ -31,7 +31,7 @@
 ## DB 설계
 ![image](https://user-images.githubusercontent.com/77103814/205563161-cb957bd8-e723-4eb5-a500-9953934f2edd.png)
 
-[Copy of Mixtory](https://www.erdcloud.com/d/mheqRxKdZbDA4kSLh)
+[ERD : DB 다이어그램 링크](https://www.erdcloud.com/d/mheqRxKdZbDA4kSLh)
 
 
 
