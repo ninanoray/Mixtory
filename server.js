@@ -180,19 +180,26 @@ app.post('/insert', function (request, response) {
 		response.redirect('/search');
     });
 });
-app.get('/edit/:id', function (request, response) {
+app.get('/edit/:name', function (request, response) {
 	fs.readFile(__dirname + '/board/edit.html', 'utf8', function (error, data) {
-        connection.query('SELECT * FROM Cocktails WHERE id = ?', [ request.param('id') ],
-		 function (error, result) {
-            response.send(ejs.render(data, { data: result[0] }));
+		let is_logged_in;
+		if (request.session.loggedin) {
+			is_logged_in = true;
+		}
+		else {
+			is_logged_in = false;
+		}
+        connection.query('SELECT * FROM Recipes WHERE name = ?', [ request.param('name') ],
+		 function (error, results) {
+            response.send(ejs.render(data, { cdata: results, logio: is_logged_in }));
         });
     });
 });
-app.post('/edit/:id', function (request, response) {
+app.post('/edit/:name', function (request, response) {
     var body = request.body
 
-    connection.query('UPDATE Cocktails SET name=?, enname=?, method=? WHERE id=?', [
-        body.name, body.enname, body.method, request.param('id')
+    connection.query('UPDATE Recipes SET igdcategory=?, amount=? WHERE name=?', [
+        body.igdcategory, body.amount, request.param('name')
     ], function () {
 		response.redirect('/search');
     });
@@ -208,7 +215,6 @@ app.get('/show/:name', function (request, response) {
 		}
         connection.query('SELECT * FROM Recipes WHERE name = ?', [ request.param('name') ],
 		 function (error, results) {
-			if (error) throw error;
             response.send(ejs.render(data, { cdata: results, logio: is_logged_in }));
         });
     });

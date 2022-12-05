@@ -121,9 +121,32 @@ main {
         position: relative;
     }
     .title {
-        margin: 40px;
+        margin-top: 40px;
         font-size: 24px;
     }
+    main .btn_eidt button  {
+        display:block;
+        width: 160px;
+        height: 50px;
+        margin: 20px auto;
+        background-color: transparent;
+        color: var(--main);
+        font-size: 16px;
+        border: 2px solid var(--main);
+        cursor: pointer; 
+        transition:all 0.3s;
+        }
+        main .btn_eidt button:hover {
+            background-color: var(--main);
+            opacity: 0.9;
+        }
+        main .btn_eidt button:hover a {
+            color:var(--bgcolor);
+        }
+        main .btn_eidt button > a {
+            color: var(--main);
+            text-decoration: none;
+        }
     table {
         width: 1140px;
         margin-bottom: 220px;
@@ -131,7 +154,6 @@ main {
         text-align: left;
         line-height: 1.5;
         border: none;
-        box-shadow: none;
       }
       table thead th {
         padding: 10px;
@@ -139,22 +161,30 @@ main {
         vertical-align: top;
         color: var(--main);
         border: none;
-        box-shadow: none;
         border-bottom: 3px solid var(--main);
         text-align: center;
       }
       table tr {
         border: none;
-        box-shadow: none;
       }
       table td {
         padding: 10px;
         vertical-align: top;
         border: none;
-        box-shadow: none;
         }
         .center_cell {
             text-align: center;
+        }
+    input {
+        width: 100px;
+        height: 55px;
+        }
+        .text {
+            width: 300px;
+            height: 55px;
+            border: none;
+            border-bottom: 1px solid var(--main);
+            background: var(--bgcolor);
         }
 
 

@@ -1,33 +1,64 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-	<meta charset="UTF-8">
-	<title>칵테일 수정 Page</title>
+    <meta charset='utf-8'>
+    <title>MIXtory</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <link rel='stylesheet' type='text/css' media='screen' href='../search.css'>
 </head>
 <body>
-	<h1>칵테일 수정 Page</h1>
-	<hr/>
-	<form method="post">
-		<legend>칵테일 정보 수정</legend>
-		<table>
-			<tr>
-				<td><labe>번호</labe></td>
-				<td><input type="text" name="id" value="<%= data.id %>" disabled/></td>
-			</tr>		
-			<tr>
-				<td><labe>이름</labe></td>
-				<td><input type="text" name="name" value="<%= data.name %>" /></td>
-			</tr>
-			<tr>
-				<td><Label>영문이름</Label></td>
-				<td><input type="text" name="enname" value="<%= data.enname %>" /></td>
-			</tr>
-			<tr>
-				<td><label>기법</label></td>
-				<td><input type="text" name="method" value="<%= data.method %>" /></td>
-			</tr>
-		</table>
-		<input type="submit" />
-	</form>
+    <header>
+        <section>
+            <nav>
+                <div class="img_logo">
+                    <a href="/">MIXtory</a>
+                </div>
+                <div class="nav_items">
+                  <ul>
+                    <li><a href="/search">칵테일 검색</a></li>
+                    <li><a href="/minibar">나만의 미니바</a></li>
+                    <li><a href="/community">커뮤니티</a></li>
+                    <li><a href="/notice">공지사항</a></li>
+                  </ul>
+                </div>
+                <div class="login">
+                    <% if(logio){ %>
+                        <a href="/logout">로그아웃</a>
+                    <% } else { %>
+                        <a href="/login">로그인</a>
+                    <% } %>
+                </div>
+            </nav>
+        </section>
+    </header>
+    <main>
+        <section>
+            <div class="title">
+                <h1><%= cdata[0].name %></h1>
+            </div>
+			<form method="post">
+				<table width="100%" border="1">
+					<thead>
+						<tr>
+							<th>재료</th>
+							<th>양</th>
+						</tr>
+					</thead>
+					<tbody>
+						<% cdata.forEach(function(item, index) { %>
+						<tr>
+							<td class="center_cell"><input class="text" type="text" name="igdcategory" value="<%= item.igdcategory %>"/></td>
+							<td class="center_cell"><input class="text" type="text" name="amount" value="<%= item.amount %>"/></td>
+						</tr>
+						<% }); %>
+					</tbody>
+				</table>
+				<input type="submit"/>
+			</form>
+        </section>
+    </main>
+    <footer>
+        footer
+    </footer>
 </body>
 </html>
