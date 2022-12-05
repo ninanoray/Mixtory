@@ -113,13 +113,53 @@ main {
     main section {
         margin: auto;
         width: 1320px;
-        height: 100vh;
+        min-height: 80vh;
         display: flex;
         flex-direction: column;
         justify-content: space-around;
         align-items: center; /* 하위 요소들 수직 가운데정렬 */
         position: relative;
     }
+    .title {
+        margin: 40px;
+        font-size: 24px;
+    }
+    table {
+        width: 1140px;
+        border-collapse: collapse;
+        text-align: left;
+        line-height: 1.5;
+        border: none;
+        box-shadow: none;
+      }
+      table thead th {
+        padding: 10px;
+        font-weight: bold;
+        vertical-align: top;
+        color: var(--main);
+        border: none;
+        box-shadow: none;
+        border-bottom: 3px solid var(--main);
+        text-align: center;
+      }
+      table tbody th {
+        width: 150px;
+        padding: 10px;
+        font-weight: bold;
+        vertical-align: top;
+        border: none;
+        box-shadow: none;
+        border-bottom: 1px solid #ccc;
+        background: #f3f6f7;
+      }
+      table td {
+        width: 350px;
+        padding: 10px;
+        vertical-align: top;
+        border: none;
+        box-shadow: none;
+        border-bottom: 1px solid #ccc;
+      }
 
 footer {
     background: darkgray;

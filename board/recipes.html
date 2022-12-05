@@ -4,7 +4,7 @@
     <meta charset='utf-8'>
     <title>MIXtory</title>
     <meta name='viewport' content='width=device-width, initial-scale=1'>
-    <link rel='stylesheet' type='text/css' media='screen' href='search.css'>
+    <link rel='stylesheet' type='text/css' media='screen' href='../search.css'>
 </head>
 <body>
     <header>
@@ -34,28 +34,24 @@
     <main>
         <section>
             <div class="title">
-                <h1>칵테일 리스트</h1>
+                <h1><%= cdata[0].name %></h1>
             </div>
             <table width="100%" border="1">
                 <thead>
                     <tr>
-                        <th>이름</th>
-                        <th>영문</th>
-                        <th>기법</th>
-                        <th>레시피 보기</th>
+                        <th>재료</th>
+                        <th>양</th>
                     </tr>
                 </thead>
                 <tbody>
                     <% cdata.forEach(function(item, index) { %>
-                        <tr>
-                            <td><%= item.name %></td>
-                            <td><%= item.enname %></td>
-                            <td><%= item.method %></td>
-                            <td><a href="/show/<%= item.name %>">SHOW</a></td>
-                        </tr>
-                        <% }); %>
+                    <tr>
+                        <td><%= item.igdcategory %></td>
+                        <td><%= item.amount %></td>
+                    </tr>
+                    <% }); %>
                 </tbody>
-            </table>
+                </table>
         </section>
     </main>
     <footer>

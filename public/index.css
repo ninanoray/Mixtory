@@ -155,7 +155,6 @@ main {
         top: 12px;
         left: 0px;
         padding: 4px 16px 4px 16px;
-        background: rgba(55, 55, 55, 0.5);
         color: var(--bgcolor);
         font-size: 36px;
         transition: 0.5s;

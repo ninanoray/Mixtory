@@ -182,9 +182,8 @@ app.post('/insert', function (request, response) {
 });
 app.get('/edit/:id', function (request, response) {
 	fs.readFile(__dirname + '/board/edit.html', 'utf8', function (error, data) {
-        connection.query('SELECT * FROM Cocktails WHERE id = ?', [
-            request.param('id')
-        ], function (error, result) {
+        connection.query('SELECT * FROM Cocktails WHERE id = ?', [ request.param('id') ],
+		 function (error, result) {
             response.send(ejs.render(data, { data: result[0] }));
         });
     });
@@ -196,6 +195,22 @@ app.post('/edit/:id', function (request, response) {
         body.name, body.enname, body.method, request.param('id')
     ], function () {
 		response.redirect('/search');
+    });
+});
+app.get('/show/:name', function (request, response) {
+	fs.readFile(__dirname + '/board/recipes.html', 'utf8', function (error, data) {
+		let is_logged_in;
+		if (request.session.loggedin) {
+			is_logged_in = true;
+		}
+		else {
+			is_logged_in = false;
+		}
+        connection.query('SELECT * FROM Recipes WHERE name = ?', [ request.param('name') ],
+		 function (error, results) {
+			if (error) throw error;
+            response.send(ejs.render(data, { cdata: results, logio: is_logged_in }));
+        });
     });
 });
 
@@ -247,5 +262,5 @@ app.get('/notice', function(request, response) {
 
 
 app.listen(3000, function () {
-    console.log('Server Running at http://127.0.0.1:3000');
+    console.log('Server Running at localhost:3000');
 });
