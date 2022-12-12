@@ -126,12 +126,16 @@ main {
         margin-bottom: 40px;
         font-size: 24px;
     }
-    main .btn_eidt {
-        margin: 120px;
+    main .center_div {
+        margin: 80px;
+        display: flex;
+        align-items: center;
+        justify-content: space-around;
     }
-    main .btn_eidt button {
+    main .btn_edit {
         width: 160px;
         height: 50px;
+        margin: 6px;
         background-color: transparent;
         color: var(--main);
         font-size: 16px;
@@ -139,14 +143,14 @@ main {
         cursor: pointer; 
         transition:all 0.3s;
         }
-        main .btn_eidt button:hover {
+        main .btn_edit:hover {
             background-color: var(--main);
             opacity: 0.9;
         }
-        main .btn_eidt button:hover a {
+        main .btn_edit:hover a {
             color:var(--bgcolor);
         }
-        main .btn_eidt button > a {
+        main .btn_edit > a {
             color: var(--main);
             text-decoration: none;
         }
@@ -161,7 +165,6 @@ main {
         padding: 10px;
         font-weight: bold;
         font-size: 24px;
-        vertical-align: top;
         color: var(--main);
         border: none;
         border-bottom: 3px solid var(--main);
@@ -169,23 +172,38 @@ main {
       }
       table td {
         padding: 10px;
-        vertical-align: top;
         border: none;
-        }
-        table .center_cell {
-            text-align: center;
-        }
+      }
+      table .center_cell {
+          text-align: center;
+      }
+    
     input {
         width: 100px;
         height: 55px;
         }
-        .text {
-            width: 300px;
+        [type = text] {
+            width: 200px;
             height: 55px;
             border: none;
             border-bottom: 1px solid var(--main);
             background: var(--bgcolor);
         }
+        [type = submit] {
+            width: 160px;
+            height: 50px;
+            background-color: transparent;
+            color: var(--main);
+            font-size: 16px;
+            border: 2px solid var(--main);
+            cursor: pointer; 
+            transition:all 0.3s;
+            }
+            [type = submit]:hover {
+                background-color: var(--main);
+                color: var(--bgcolor);
+                opacity: 0.9;
+            }
 
 
 footer {

@@ -178,6 +178,24 @@ main {
         object-fit: cover;
         transition: all 0.3s;
       }
+      .category_container button {
+        width: 160px;
+        height: 50px;
+        margin: 6px;
+        background-color: transparent;
+        color: var(--main);
+        font-size: 16px;
+        border: 2px solid var(--main);
+        cursor: pointer; 
+        transition:all 0.3s;
+        position: absolute;
+        bottom: 12px;
+        right: -170px;
+      }
+      .category_container:hover button {  
+        bottom: 12px;
+        right: 0px;
+      }
     
       
   

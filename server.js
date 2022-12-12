@@ -146,7 +146,7 @@ app.get('/logout', function(request, response) {
 });
 
 // 칵테일 검색
-app.get('/search', function(request, response) {
+app.get(['/search', '/search/:igd'], function(request, response) { // 칵테일 목록
 	fs.readFile(__dirname + '/public/search.html', 'utf8', function (error, data) {
 		let is_logged_in;
 		if (request.session.loggedin) {
@@ -160,31 +160,87 @@ app.get('/search', function(request, response) {
 		}
 
 		connection.query('SELECT * FROM Cocktails', function (error, results) {
-			// 응답합니다
-			response.send(ejs.render(data, { cdata : results, logio: is_logged_in}));
+			var ingredients = request.param('igd');
+			var sql = 'SELECT * FROM Cocktails, Recipes WHERE ingredients = ?';
+			if (ingredients) {
+				connection.query(sql, [ingredients], function (error, results) {
+					response.send(ejs.render(data, { cdata : results, logio: is_logged_in}));
+				});
+			}
+			else {
+				// 응답합니다
+				response.send(ejs.render(data, { cdata : results, logio: is_logged_in}));
+			}
+			
+		});
+	});
+});app.get('/search/gin', function(request, response) { // 칵테일 목록
+	fs.readFile(__dirname + '/public/search.html', 'utf8', function (error, data) {
+		let is_logged_in;
+		if (request.session.loggedin) {
+			is_logged_in = true;
+		}
+		else {
+			is_logged_in = false;
+		}
+
+		connection.query('SELECT * FROM Cocktails', function (error, results) {
+			var sql = 'SELECT * FROM Cocktails, Recipes WHERE ingredients = ?';
+			connection.query(sql, ["Gin"], function (error, results) {
+				response.send(ejs.render(data, { cdata : results, logio: is_logged_in}));
+			});
 		});
 	});
 });
-app.get('/delete/:id', function (request, response) { 
-    connection.query('DELETE FROM Cocktails WHERE id=?', [request.param('id')], function () {
-		response.redirect('/search');
+app.get('/show/:name', function (request, response) { // 칵테일 레시피 정보
+	fs.readFile(__dirname + '/board/recipes.html', 'utf8', function (error, data) {
+		let is_logged_in;
+		if (request.session.loggedin) {
+			is_logged_in = true;
+		}
+		else {
+			is_logged_in = false;
+		}
+        connection.query('SELECT * FROM Recipes WHERE name = ?', [ request.param('name') ],
+		 function (error, results) {
+            response.send(ejs.render(data, { cdata: results, logio: is_logged_in }));
+        });
     });
 });
-app.get('/insert', function (request, response) {	
+app.get('/insert', function (request, response) { // 칵테일 추가
 	fs.readFile(__dirname + '/board/insert.html', 'utf8', function (error, data) {
-        response.send(data);
+		let is_logged_in;
+		if (request.session.loggedin) {
+			is_logged_in = true;
+		}
+		else {
+			is_logged_in = false;
+		}
+        connection.query('SELECT * FROM Recipes WHERE name = ?', [ request.param('name') ],
+		 function (error, results) {
+            response.send(ejs.render(data, { cdata: results, logio: is_logged_in }));
+        });
     });
 });
-app.post('/insert', function (request, response) {
-    var body = request.body;
+app.post('/insert', function (request, response) { // 칵테일 추가
+	var sql_cocktails = 'INSERT INTO Cocktails (name, enname, method) VALUES (?, ?, ?)';
+	var sql_recipes = 'INSERT INTO Recipes (name, igdcategory, amount) VALUES (?, null, 0)';
+    var name = request.body.name;
+	var enname = request.body.enname;
+	var method = request.body.method;
 
-    connection.query('INSERT INTO Cocktails (name, enname, method) VALUES (?, ?, ?)', [
-        body.name, body.enname, body.method
-    ], function () {
+	if (name && enname && method) {
+		connection.query(sql_cocktails, [name, enname, method], function () {
+			connection.query(sql_recipes, [name] , function() {
+				response.redirect('/edit/' + name);
+			});
+		});
+	}
+	else {
 		response.redirect('/search');
-    });
+	}
 });
-app.get('/edit/:name', function (request, response) {
+app.get('/edit/:name', function (request, response) { // 칵테일 레시피 정보 수정
 	fs.readFile(__dirname + '/board/edit.html', 'utf8', function (error, data) {
 		let is_logged_in;
 		if (request.session.loggedin) {
@@ -199,28 +255,50 @@ app.get('/edit/:name', function (request, response) {
         });
     });
 });
-app.post('/edit/:name', function (request, response) {
-    var body = request.body
+app.post('/edit/:name/add', function (request, response) { // 칵테일 새재료 추가
+	var sql = 'INSERT INTO Recipes (name, igdcategory, amount) VALUES (?, ?, ?)';
+	var name = request.param('name');
+	var igdcategory = request.body.igdcategoryAdd;
+	var amount = request.body.amountAdd;
 
-    connection.query('UPDATE Recipes SET igdcategory=?, amount=? WHERE name=?', [
-        body.igdcategory, body.amount, request.param('name')
-    ], function () {
-		response.redirect('/search');
+	if (igdcategory && amount) {
+		connection.query(sql, [name, igdcategory, amount], function () {
+			response.redirect('/edit/' + name);
+		});
+	}
+	else {
+		response.redirect('/edit/' + name);
+	}
+});
+app.post('/edit/:name/:id', function (request, response) { // 칵테일 재료 정보 수정
+	var sql = 'UPDATE Recipes SET igdcategory=?, amount=? WHERE id=?';
+	var id = request.param('id');
+	var amount = request.body['amount_' + id];
+	var name = request.param('name');
+	var igdcategory = request.body['igdcategory_' + id];
+
+	connection.query(sql, [igdcategory, amount, id], function () {
+			response.redirect('/show/' + name);
+	});
+});
+app.get('/delete/:name', function (request, response) { // 칵테일 삭제
+	var sql_cocktails = 'DELETE FROM Cocktails WHERE name=?';
+	var sql_recipes = 'DELETE FROM Recipes WHERE name=?';
+	var name = request.param('name');
+
+    connection.query(sql_recipes, [name], function () {
+		connection.query(sql_cocktails, [name], function () {
+			response.redirect('/search');
+		});
     });
 });
-app.get('/show/:name', function (request, response) {
-	fs.readFile(__dirname + '/board/recipes.html', 'utf8', function (error, data) {
-		let is_logged_in;
-		if (request.session.loggedin) {
-			is_logged_in = true;
-		}
-		else {
-			is_logged_in = false;
-		}
-        connection.query('SELECT * FROM Recipes WHERE name = ?', [ request.param('name') ],
-		 function (error, results) {
-            response.send(ejs.render(data, { cdata: results, logio: is_logged_in }));
-        });
+app.get('/delete/:name/:id', function (request, response) { // 칵테일 재료 삭제
+	var sql_recipes = 'DELETE FROM Recipes WHERE id=?';
+	var id = request.param('id');
+	var name = request.param('name');
+
+    connection.query(sql_recipes, [id], function () {
+		response.redirect('/edit/' + name);
     });
 });
 

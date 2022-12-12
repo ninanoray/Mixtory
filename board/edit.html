@@ -34,27 +34,39 @@
     <main>
         <section>
             <div class="title">
-                <h1><%= cdata[0].name %></h1>
+                <h1><%= cdata[0].name %> 레시피 수정</h1>
             </div>
-			<form method="post">
-				<table width="100%" border="1">
+                <table>
 					<thead>
 						<tr>
 							<th>재료</th>
 							<th>양</th>
+                            <th></th>
+                            <th></th>
 						</tr>
 					</thead>
 					<tbody>
 						<% cdata.forEach(function(item, index) { %>
-						<tr>
-							<td class="center_cell"><input class="text" type="text" name="igdcategory" value="<%= item.igdcategory %>"/></td>
-							<td class="center_cell"><input class="text" type="text" name="amount" value="<%= item.amount %>"/></td>
-						</tr>
+                        <tr>
+                            <form action="/edit/<%= item.name %>/<%= item.id %>" method="post">
+                                <td class="center_cell"><input type="text" name="igdcategory_<%= item.id %>" value="<%= item.igdcategory %>"/></td>
+                                <td class="center_cell"><input type="text" name="amount_<%= item.id %>" value="<%= item.amount %>"/></td>
+                                <td class="center_cell"><input type="submit" value="수정"/></td>
+                                <td class="center_cell"><button class="btn_edit"><a href="/delete/<%= item.name %>/<%= item.id %>">삭제</a></button></td>
+                            </form>
+                        </tr>
 						<% }); %>
+                        <tr>
+                            <form action="/edit/<%= cdata[0].name %>/add" method="post">
+                                <td class="center_cell"><input type="text" name="igdcategoryAdd"/></td>
+                                <td class="center_cell"><input type="text" name="amountAdd"/></td>
+                                <td class="center_cell"><input type="submit" value="추가"/></td>
+                                <td class="center_cell"><button class="btn_edit"><a href="/show/<%= cdata[0].name %>">완료</a></button></td>
+                            </form>
+                        </tr>
 					</tbody>
 				</table>
-				<input type="submit"/>
-			</form>
+            </form>
         </section>
     </main>
     <footer>
