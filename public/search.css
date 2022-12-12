@@ -126,6 +126,12 @@ main {
         margin-bottom: 40px;
         font-size: 24px;
     }
+    main .center_div {
+        margin: 80px;
+        display: flex;
+        align-items: center;
+        justify-content: space-around;
+    }
     main .btn_edit {
         width: 160px;
         height: 50px;
