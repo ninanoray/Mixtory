@@ -21,7 +21,7 @@
   }
   a {
       text-decoration: none; /* 기본 밑줄을 제거합니다 */
-      color: var(--main);
+      color: var(--light);
     }
     a:hover {
       text-decoration: underline; /* 마우스 커서가 올라갔을 때 밑줄을 생성합니다*/
@@ -256,7 +256,39 @@ main {
         margin-left: auto;
     }
 
+    .post {
+        width: 1140px;
+    }
+    .post .post_titlebar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    .post .post_titlebar h1 {
+        font-size: 36px;
+        margin: 10px;
+    }
+    .post .post_titlebar p {
+        font-size: 20px;
+        margin: 8px;
+    }
+    .post_content {
+        font-size: 20px;
+        margin: 50px 16px 10px 16px;
+    }
+
+    .right_bottom {
+        margin: auto 0 0 auto;
+    }
+
+.line {
+    width: 100%;
+    height: 2px;
+    margin: 12px 0 12px 0;
+    background: var(--main);
+}
+
 footer {
-    background: darkgray;
+    background: var(--light);
     height: 310px;
 }

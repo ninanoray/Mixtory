@@ -5,6 +5,7 @@ var express = require('express');
 var session = require('express-session');
 var bodyParser = require('body-parser');
 var ejs = require('ejs');
+const { parseUrl } = require('mysql/lib/ConnectionConfig');
 
 var connection = mysql.createConnection({
 	host     : '127.0.0.1',
@@ -34,6 +35,7 @@ function restrict(req, res, next) {
     next();
   } else {
     req.session.error = 'Access denied!';
+	req.session.returnTo = req.originalUrl; // 세션에 기존 경로 저장
 	res.writeHead(200, {
 		'Content-Type': 'text/html; charset=utf-8'
 	});
@@ -45,10 +47,10 @@ function restrict(req, res, next) {
 
 app.use('/', function(request, response, next) {
 	
-	if ( request.session.loggedin == true || request.url == "/login" || request.url == "/register"
+	if ( request.session.loggedin == true || request.url == "/register"
 	 || request.url == "/minibar" || request.url == "/community" || request.url == "/insert"
 	 || String(request.url).includes("/search") || String(request.url).includes("/show")
-	 || String(request.url).includes("/notice")) {
+	 || String(request.url).includes("/notice") || String(request.url).includes("/login")) {
     	next();
 	}
 	else {
@@ -66,33 +68,39 @@ app.set('index engine','ejs');
 app.set('my','./my');
 app.get('/', function(request, response) {
 	//response.sendFile(path.join(__dirname + '/my/index.html'));
-	fs.readFile(__dirname + '/my/index.html', 'utf8', function (error, logio) {
+	fs.readFile(__dirname + '/my/index.html', 'utf8', function (error, data) {
 		if (request.session.loggedin)
-			response.send(ejs.render(logio, { logio: true }));
+			response.send(ejs.render(data, { logio: true }));
 		else
-			response.send(ejs.render(logio, { logio: false }));
+			response.send(ejs.render(data, { logio: false }));
 	});
 });
 
 app.get('/login', function(request, response) {
 	response.sendFile(path.join(__dirname + '/my/login.html'));
 });
-
 app.post('/login', function(request, response) {
 	var username = request.body.username;
 	var password = request.body.password;
+
 	if (username && password) {
 		connection.query('SELECT * FROM user WHERE username = ? AND password = ?', [username, password], function(error, results, fields) {
 			if (error) throw error;
 			if (results.length > 0) {
 				request.session.loggedin = true;
 				request.session.username = username;
-				response.redirect('/');
-				response.end();
+				if (request.session.returnTo) { // 세션에 리다이렉션할 URL있나 확인
+					var redirURL = request.session.returnTo;
+					delete request.session.returnTo;
+					request.session.save(function (err) { // 세션에서 리다이렉션 URL 초기화
+						//if(err) return next(err);
+						response.redirect(redirURL);  // 왔던곳으로 !!!
+					});
+				} else {
+					response.redirect('/');
+				}		
 			} else {
-				response.writeHead(200, {
-					'Content-Type': 'text/html; charset=utf-8'
-				});
+				response.writeHead(200, {'Content-Type': 'text/html; charset=utf-8'}); // 한글출력
 				response.write("<script>alert('ID/비밀번호를 다시 입력해주세요.')</script>");
 				response.write('<script>location.href = "/login";</script>');
 			}			
@@ -353,6 +361,23 @@ app.get('/community', restrict, function(request, response) {
 		});
 	});
 });
+app.get('/community/read/:id', restrict, function(request, response) {
+	fs.readFile(__dirname + '/board/post.html', 'utf8', function (error, data) {
+		let is_logged_in;
+		if (request.session.loggedin)
+			is_logged_in = true;
+		else
+			is_logged_in = false;
+
+		var sql = 'SELECT * FROM Compost WHERE id=?'
+		var pid = request.params.id;
+
+		connection.query(sql, [pid], function (error, results) {
+			response.send(ejs.render(data,
+				{ post: results, logio: is_logged_in, community: true }));
+		});
+	});
+});
 
 // 공지사항
 app.get('/notice', function(request, response) {
@@ -366,6 +391,23 @@ app.get('/notice', function(request, response) {
 		var sql = 'SELECT * FROM Notice'
 		connection.query(sql, function (error, results) {
 			response.send(ejs.render(data, { post: results, logio: is_logged_in }));
+		});
+	});
+});
+app.get('/notice/read/:id', function(request, response) {
+	fs.readFile(__dirname + '/board/post.html', 'utf8', function (error, data) {
+		let is_logged_in;
+		if (request.session.loggedin)
+			is_logged_in = true;
+		else
+			is_logged_in = false;
+
+		var sql = 'SELECT * FROM Notice WHERE id=?'
+		var pid = request.params.id;
+
+		connection.query(sql, [pid], function (error, results) {
+			response.send(ejs.render(data,
+				{ post: results, logio: is_logged_in, community: false }));
 		});
 	});
 });
