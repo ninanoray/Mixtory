@@ -34,6 +34,7 @@ CREATE TABLE Likes (
     cname VARCHAR(20) NOT NULL,
     uname VARCHAR(50) NOT NULL
 );
+ALTER TABLE Likes ADD UNIQUE INDEX (cname, uname); //조합 중복안되게함
 
 
 

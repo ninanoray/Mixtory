@@ -21,6 +21,7 @@ app.use(session({
 }));
 
 app.use(express.static('public'));
+app.use('/static', express.static(__dirname + '/public'));
 app.use(bodyParser.urlencoded({extended : true}));
 app.use(bodyParser.json());
 
@@ -289,6 +290,16 @@ app.get('/delete/:name/:id', function (request, response) { // 칵테일 재료 
     });
 });
 
+app.get('/like/:cname/', function (request, response) { // 칵테일 재료 삭제
+	var sql_like = 'INSERT IGNORE INTO Likes (cname, uname) VALUES (?, ?)';
+	var cname = request.params.cname;
+	var uname = request.session.username;
+
+    connection.query(sql_like, [cname, uname], function () {
+		response.redirect('/minibar');
+    });
+});
+
 // 나만의 미니바
 app.get('/minibar', restrict, function(request, response) {
 	fs.readFile(__dirname + '/my/minibar.html', 'utf8', function (error, data) {
@@ -297,11 +308,17 @@ app.get('/minibar', restrict, function(request, response) {
 			is_logged_in = true;
 		else
 			is_logged_in = false;
-
-		connection.query('SELECT * FROM Ingredients', function (error, results) {
-			// 응답합니다
+		
+		var uname = request.session.username;
+		// 쿼리 : 사용자가 좋아요한 칵테일의 레시피 재료 목록을 가져온다
+		var sql = 'SELECT * FROM Ingredients WHERE category IN (SELECT Recipes.igdcategory FROM Likes, Recipes WHERE Likes.uname=? AND Likes.cname=Recipes.name)';
+		connection.query(sql, [uname], function (error, results) {
 			response.send(ejs.render(data, { cdata : results, logio: is_logged_in}));
 		});
+
+		// connection.query('SELECT * FROM Ingredients', function (error, results) {
+		// 	response.send(ejs.render(data, { cdata : results, logio: is_logged_in}));
+		// });
 	});
 });
 app.get('/minibar/delete/:id', function (request, response) { 

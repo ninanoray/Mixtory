@@ -2,6 +2,7 @@
     --main: #060606;
     --light: #888;
     --bgcolor: #f2f4f7;
+    --heart: #d50100;
   }
   @font-face {
     font-family: 'Belleza';
@@ -151,6 +152,28 @@ main {
             color:var(--bgcolor);
         }
         main .btn_edit > a {
+            color: var(--main);
+            text-decoration: none;
+        }
+    .btn_heart {
+        width: 60px;
+        height: 50px;
+        margin: 50px 0 0 10px;
+        background-color: transparent;
+        font-size: 16px;
+        border: 2px solid var(--main);
+        cursor: pointer; 
+        transition:all 0.3s;
+        }
+        .btn_heart:hover {
+            background-color: var(--heart);
+            border: 2px solid var(--heart);
+            opacity: 0.9;
+        }
+        .btn_heart:hover a {
+            color:var(--bgcolor);
+        }
+        .btn_heart > a {
             color: var(--main);
             text-decoration: none;
         }
