@@ -1,10 +1,3 @@
-CREATE TABLE User {
-    id int NOT NULL auto_increment primary key,
-    username varchar(50) NOT NULL,
-    password varchar(255) NOT NULL,
-    email varchar(100) NOT NULL
-};
-
 CREATE TABLE Cocktails (
     id int NOT NULL auto_increment primary key,
     name varchar(20) NOT NULL unique key,

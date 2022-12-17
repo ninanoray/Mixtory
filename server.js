@@ -46,8 +46,9 @@ function restrict(req, res, next) {
 app.use('/', function(request, response, next) {
 	
 	if ( request.session.loggedin == true || request.url == "/login" || request.url == "/register"
-	 || request.url == "/minibar" || request.url == "/community" || request.url == "/search"
-	 || request.url == "/notice") {
+	 || request.url == "/minibar" || request.url == "/community" || request.url == "/insert"
+	 || String(request.url).includes("/search") || String(request.url).includes("/show")
+	 || String(request.url).includes("/notice")) {
     	next();
 	}
 	else {
@@ -201,7 +202,7 @@ app.get('/show/:name', restrict, function (request, response) { // 칵테일 레
         });
     });
 });
-app.get('/insert', function (request, response) { // 칵테일 추가
+app.get('/insert', restrict, function (request, response) { // 칵테일 추가
 	fs.readFile(__dirname + '/board/insert.html', 'utf8', function (error, data) {
 		let is_logged_in;
 		if (request.session.loggedin) {
@@ -340,23 +341,31 @@ app.get('/minibar', restrict, function(request, response) {
 // 커뮤니티
 app.get('/community', restrict, function(request, response) {
 	fs.readFile(__dirname + '/my/community.html', 'utf8', function (error, data) {
-		if (request.session.loggedin) {
-			response.send(ejs.render(data, { logio: true }));
-		}
+		let is_logged_in;
+		if (request.session.loggedin)
+			is_logged_in = true;
 		else
-			response.send(ejs.render(data, { logio: false }));
-			response.end();
+			is_logged_in = false;
+
+		var sql = 'SELECT * FROM Compost'
+		connection.query(sql, function (error, results) {
+			response.send(ejs.render(data, { post: results, logio: is_logged_in }));
+		});
 	});
 });
 
 // 공지사항
 app.get('/notice', function(request, response) {
 	fs.readFile(__dirname + '/public/notice.html', 'utf8', function (error, data) {
-		if (request.session.loggedin) {
-			response.send(ejs.render(data, { logio: true }));
-		}
+		let is_logged_in;
+		if (request.session.loggedin)
+			is_logged_in = true;
 		else
-			response.send(ejs.render(data, { logio: false }));
-			response.end();
+			is_logged_in = false;
+
+		var sql = 'SELECT * FROM Notice'
+		connection.query(sql, function (error, results) {
+			response.send(ejs.render(data, { post: results, logio: is_logged_in }));
+		});
 	});
 });
