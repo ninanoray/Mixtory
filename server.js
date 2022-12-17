@@ -180,7 +180,7 @@ app.get('/search/:igd', function(request, response) { // 칵테일 목록
 		});
 	});
 });
-app.get('/show/:name', function (request, response) { // 칵테일 레시피 정보
+app.get('/show/:name', restrict, function (request, response) { // 칵테일 레시피 정보
 	fs.readFile(__dirname + '/board/recipes.html', 'utf8', function (error, data) {
 		let is_logged_in;
 		if (request.session.loggedin) {
@@ -189,9 +189,15 @@ app.get('/show/:name', function (request, response) { // 칵테일 레시피 정
 		else {
 			is_logged_in = false;
 		}
-        connection.query('SELECT * FROM Recipes WHERE name = ?', [ request.param('name') ],
-		 function (error, results) {
-            response.send(ejs.render(data, { cdata: results, logio: is_logged_in }));
+		var uname = request.session.username;
+		var cname = request.params.name;
+		var sql = 'SELECT * FROM Recipes WHERE name = ?';
+		var sql_like = 'SELECT cname FROM Likes WHERE uname=? AND cname=?';
+
+        connection.query(sql, [ cname ], function (error, results) {
+			connection.query(sql_like, [ uname, cname ], function (error, result) {
+				response.send(ejs.render(data, { cdata: results, isLike: result, logio: is_logged_in}));
+			});
         });
     });
 });
@@ -297,6 +303,15 @@ app.get('/like/:cname/', function (request, response) { // 칵테일 재료 삭�
 
     connection.query(sql_like, [cname, uname], function () {
 		response.redirect('/minibar');
+    });
+});
+app.get('/dislike/:cname/', function (request, response) { // 칵테일 재료 삭제
+	var sql_like = 'DELETE FROM Likes WHERE cname=? AND uname=?';
+	var cname = request.params.cname;
+	var uname = request.session.username;
+
+    connection.query(sql_like, [cname, uname], function () {
+		response.redirect('/show/' + cname);
     });
 });
 
