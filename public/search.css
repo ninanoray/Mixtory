@@ -227,7 +227,20 @@ main {
                 color: var(--bgcolor);
                 opacity: 0.9;
             }
-
+    .table_widget {
+        width: 1140px;
+        display: flex;
+        align-items: center;
+    }
+    .table_widget input[type="checkbox"] {
+        width: 24px;
+        height: 24px;
+        margin-left: 10px;
+        accent-color: var(--main);
+    }
+    .table_widget label {
+        margin-left: auto;
+    }
 
 footer {
     background: darkgray;

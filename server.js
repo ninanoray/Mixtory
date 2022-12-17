@@ -313,19 +313,13 @@ app.get('/minibar', restrict, function(request, response) {
 		// 쿼리 : 사용자가 좋아요한 칵테일의 레시피 재료 목록을 가져온다
 		var sql = 'SELECT * FROM Ingredients WHERE category IN (SELECT Recipes.igdcategory FROM Likes, Recipes WHERE Likes.uname=? AND Likes.cname=Recipes.name)';
 		connection.query(sql, [uname], function (error, results) {
-			response.send(ejs.render(data, { cdata : results, logio: is_logged_in}));
+			connection.query('SELECT * FROM Ingredients', function (error, results_second) {
+				response.send(ejs.render(data, {
+					cdata : results, alldata : results_second,logio: is_logged_in
+				}));
+			});
 		});
-
-		// connection.query('SELECT * FROM Ingredients', function (error, results) {
-		// 	response.send(ejs.render(data, { cdata : results, logio: is_logged_in}));
-		// });
 	});
-});
-app.get('/minibar/delete/:id', function (request, response) { 
-    // 
-    connection.query('DELETE FROM Ingredients WHERE id=?', [request.param('id')], function () {
-		response.redirect('/minibar');
-    });
 });
 
 // 커뮤니티
