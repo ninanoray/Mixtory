@@ -1,3 +1,10 @@
+CREATE TABLE User {
+    id int NOT NULL auto_increment primary key,
+    username varchar(50) NOT NULL,
+    password varchar(255) NOT NULL,
+    email varchar(100) NOT NULL
+};
+
 CREATE TABLE Cocktails (
     id int NOT NULL auto_increment primary key,
     name varchar(20) NOT NULL unique key,
@@ -20,6 +27,12 @@ CREATE TABLE Recipes (
     amount int NOT NULL,
     FOREIGN KEY(name) REFERENCES Cocktails(name),
     CHECK(amount >= 0)
+);
+
+CREATE TABLE Likes (
+    id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    cname VARCHAR(20) NOT NULL,
+    uname VARCHAR(50) NOT NULL
 );
 
 

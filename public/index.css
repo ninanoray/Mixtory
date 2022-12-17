@@ -192,9 +192,19 @@ main {
         bottom: 12px;
         right: -170px;
       }
+      .category_container button a {
+        color: var(--main);
+      }
       .category_container:hover button {  
-        bottom: 12px;
-        right: 0px;
+        bottom: 8px;
+        right: 8px;
+      }
+      .category_container button:hover {
+        background-color: var(--main);
+      }
+      .category_container button:hover a {
+        text-decoration: none;
+        color: var(--bgcolor);
       }
     
       

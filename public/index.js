@@ -27,9 +27,9 @@ window.onload = function() {
             width_shrink(categories, i);
             categories[0].style.background = '#E9EDF0';
             categories[1].style.background = '#BED75C';
-            categories[2].style.background = '#FCE259';
+            categories[2].style.background = '#f77551';
             categories[3].style.background = '#DEEBF7';
-            categories[4].style.background = '#E9AA5D';
+            categories[4].style.background = '#FCE259';
         });
         cat.addEventListener("mouseout", function() {
             width_init(categories);
