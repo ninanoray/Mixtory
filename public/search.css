@@ -29,6 +29,14 @@
   h1 {
     letter-spacing: 1.6px;
   }
+  textarea{
+    width: 1140px;
+    height: 400px;
+    box-sizing: border-box;
+    border: solid 2px var(--main);
+    font-size: 20px;
+    resize: none;
+  }
 header {
     height: 160px;
     background-color: var(--main);
@@ -123,10 +131,14 @@ main {
         position: relative;
     }
     main .title {
+        width: 1140px;;
+        display: flex;
+        justify-content: center;
+        align-items: center;
         margin-top: 80px;
         margin-bottom: 40px;
         font-size: 24px;
-    }
+        }
     main .center_div {
         margin: 80px;
         display: flex;
@@ -136,7 +148,6 @@ main {
     main .btn_edit {
         width: 160px;
         height: 50px;
-        margin: 50px 0 0 0;
         background-color: transparent;
         color: var(--main);
         font-size: 16px;
@@ -158,7 +169,7 @@ main {
     .btn_heart {
         width: 60px;
         height: 50px;
-        margin: 50px 0 0 10px;
+        margin-left: auto;
         background-color: transparent;
         font-size: 16px;
         border: 2px solid var(--main);
@@ -180,7 +191,7 @@ main {
     .btn_heart_selected {
         width: 60px;
         height: 50px;
-        margin: 50px 0 0 10px;
+        margin-left: auto;
         background-color: transparent;
         font-size: 16px;
         background-color: var(--heart);
@@ -193,6 +204,7 @@ main {
         }
     table {
         width: 1140px;
+        margin: 20px 0 60px 0 ;
         border-collapse: collapse;
         text-align: left;
         line-height: 1.5;
@@ -276,10 +288,34 @@ main {
         font-size: 20px;
         margin: 50px 16px 10px 16px;
     }
-
-    .right_bottom {
-        margin: auto 0 0 auto;
+    .post_input_title {
+        width: 1140px;
+        font-size: 24px;
+        border: none;
     }
+    .post_btn_group {
+        margin-top: 20px;
+    }
+    .post_btn_group input {
+        margin-left: auto;
+    }
+    .post_btn_group button {
+        margin-left: 10px;
+    }
+
+.right_bottom {
+    margin: auto 0 0 auto;
+}
+.center {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.width_parent {
+    width: 1140px;
+    display: flex;
+}
 
 .line {
     width: 100%;

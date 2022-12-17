@@ -355,7 +355,7 @@ app.get('/community', restrict, function(request, response) {
 		else
 			is_logged_in = false;
 
-		var sql = 'SELECT * FROM Compost'
+		var sql = 'SELECT DATE_FORMAT(pdate, "%Y.%m.%d / %h:%i %p") as pdate, id, title, writer FROM Compost';
 		connection.query(sql, function (error, results) {
 			response.send(ejs.render(data, { post: results, logio: is_logged_in }));
 		});
@@ -369,12 +369,41 @@ app.get('/community/read/:id', restrict, function(request, response) {
 		else
 			is_logged_in = false;
 
-		var sql = 'SELECT * FROM Compost WHERE id=?'
+		var sql = 'SELECT DATE_FORMAT(pdate, "%Y.%m.%d / %h:%i %p") as pdate, id, title, writer, content FROM Compost WHERE id=?'
 		var pid = request.params.id;
 
 		connection.query(sql, [pid], function (error, results) {
 			response.send(ejs.render(data,
 				{ post: results, logio: is_logged_in, community: true }));
+		});
+	});
+});
+app.get('/community/write', restrict, function(request, response) {
+	fs.readFile(__dirname + '/board/postwrite.html', 'utf8', function (error, data) {
+		let is_logged_in;
+		if (request.session.loggedin)
+			is_logged_in = true;
+		else
+			is_logged_in = false;
+
+		response.send(ejs.render(data, { logio: is_logged_in }));
+	});
+});
+app.post('/community/write', restrict, function(request, response) {
+	fs.readFile(__dirname + '/board/postwrite.html', 'utf8', function (error, data) {
+		let is_logged_in;
+		if (request.session.loggedin)
+			is_logged_in = true;
+		else
+			is_logged_in = false;
+
+		var sql = 'INSERT INTO Compost (title, content, writer) VALUES (?, ?, ?)'
+		var uname = request.session.username;
+		var title = request.body.title;
+		var content = request.body.content;
+
+		connection.query(sql, [title, content, uname], function (error, results) {
+			response.redirect('/community');
 		});
 	});
 });
@@ -388,7 +417,7 @@ app.get('/notice', function(request, response) {
 		else
 			is_logged_in = false;
 
-		var sql = 'SELECT * FROM Notice'
+		var sql = 'SELECT DATE_FORMAT(pdate, "%Y.%m.%d / %h:%i %p") as pdate, id, title FROM Notice';
 		connection.query(sql, function (error, results) {
 			response.send(ejs.render(data, { post: results, logio: is_logged_in }));
 		});
@@ -402,7 +431,7 @@ app.get('/notice/read/:id', function(request, response) {
 		else
 			is_logged_in = false;
 
-		var sql = 'SELECT * FROM Notice WHERE id=?'
+		var sql = 'SELECT DATE_FORMAT(pdate, "%Y.%m.%d / %h:%i %p") as pdate, id, title, content FROM Notice WHERE id=?'
 		var pid = request.params.id;
 
 		connection.query(sql, [pid], function (error, results) {

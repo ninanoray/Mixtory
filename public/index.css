@@ -20,7 +20,7 @@ body {
 }
 a {
     text-decoration: none; /* 기본 밑줄을 제거합니다 */
-    color: var(--main);
+    color: var(--light);
   }
   a:hover {
     text-decoration: underline; /* 마우스 커서가 올라갔을 때 밑줄을 생성합니다*/

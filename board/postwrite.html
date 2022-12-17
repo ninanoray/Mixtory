@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8'>
+    <title>MIXtory</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <link rel='stylesheet' type='text/css' media='screen' href='/static/search.css'>
+</head>
+<body>
+    <header>
+        <section>
+            <nav>
+                <div class="img_logo">
+                    <a href="/">MIXtory</a>
+                </div>
+                <div class="nav_items">
+                  <ul>
+                    <li><a href="/search">칵테일 검색</a></li>
+                    <li><a href="/minibar">나만의 미니바</a></li>
+                    <li><a href="/community">커뮤니티</a></li>
+                    <li><a href="/notice">공지사항</a></li>
+                  </ul>
+                </div>
+                <div class="login">
+                    <% if(logio){ %>
+                        <a href="/logout">로그아웃</a>
+                    <% } else { %>
+                        <a href="/login">로그인</a>
+                    <% } %>
+                </div>
+            </nav>
+        </section>
+    </header>
+    <main>
+        <section class="post">
+            <div class="title">
+                    <h1>커뮤니티</h1>
+            </div>
+            <form method="post">
+                <div class="post">
+                    <div class="post_titlebar">
+                        <input type="text" name="title" class="post_input_title" placeholder="제목을 입력하세요.."/>
+                    </div>
+                    <div class="line"></div>
+                    <textarea name="content"
+                    maxlengh=300
+                    required : submit
+                    placeholder="내용을 입력하세요.."></textarea>
+                </div>
+                <div class="center post_btn_group">
+                    <input type="submit" value="등록"/>
+                    <button class="btn_edit">
+                        <a href="javascript:history.back()">취소</a>
+                    </button>
+                </div>
+            </form>
+        </section>
+    </main>
+</body>
