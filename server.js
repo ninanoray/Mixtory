@@ -146,7 +146,7 @@ app.get('/logout', function(request, response) {
 });
 
 // 칵테일 검색
-app.get(['/search', '/search/:igd'], function(request, response) { // 칵테일 목록
+app.get('/search', function(request, response) { // 칵테일 목록
 	fs.readFile(__dirname + '/public/search.html', 'utf8', function (error, data) {
 		let is_logged_in;
 		if (request.session.loggedin) {
@@ -160,21 +160,11 @@ app.get(['/search', '/search/:igd'], function(request, response) { // 칵테일 
 		}
 
 		connection.query('SELECT * FROM Cocktails', function (error, results) {
-			var ingredients = request.param('igd');
-			var sql = 'SELECT * FROM Cocktails, Recipes WHERE ingredients = ?';
-			if (ingredients) {
-				connection.query(sql, [ingredients], function (error, results) {
-					response.send(ejs.render(data, { cdata : results, logio: is_logged_in}));
-				});
-			}
-			else {
-				// 응답합니다
-				response.send(ejs.render(data, { cdata : results, logio: is_logged_in}));
-			}
-			
+			response.send(ejs.render(data, { cdata : results, logio: is_logged_in}));		
 		});
 	});
-});app.get('/search/gin', function(request, response) { // 칵테일 목록
+});
+app.get('/search/:igd', function(request, response) { // 칵테일 목록
 	fs.readFile(__dirname + '/public/search.html', 'utf8', function (error, data) {
 		let is_logged_in;
 		if (request.session.loggedin) {
@@ -183,12 +173,9 @@ app.get(['/search', '/search/:igd'], function(request, response) { // 칵테일 
 		else {
 			is_logged_in = false;
 		}
-
-		connection.query('SELECT * FROM Cocktails', function (error, results) {
-			var sql = 'SELECT * FROM Cocktails, Recipes WHERE ingredients = ?';
-			connection.query(sql, ["Gin"], function (error, results) {
-				response.send(ejs.render(data, { cdata : results, logio: is_logged_in}));
-			});
+		var sql = 'SELECT Cocktails.* FROM Cocktails, Recipes WHERE Recipes.igdcategory=? AND Cocktails.name=Recipes.name';
+		connection.query(sql, [ request.params.igd ], function (error, results) {
+			response.send(ejs.render(data, { cdata : results, logio: is_logged_in }));
 		});
 	});
 });
