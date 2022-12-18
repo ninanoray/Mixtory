@@ -5,7 +5,19 @@ var express = require('express');
 var session = require('express-session');
 var bodyParser = require('body-parser');
 var ejs = require('ejs');
+var multer = require('multer'); // 파일 모듈
 const { parseUrl } = require('mysql/lib/ConnectionConfig');
+
+var storage = multer.diskStorage({
+    destination: function (req, file, cb) { //파일 저장위치 설정
+		console.log("이미지 파일");
+		cb(null, 'uploads');
+    },
+    filename: function (req, file, cb) { //파일이름 설정
+        cb(null, Date.now() + "-" + file.originalname);
+    }
+});
+var upload = multer({ storage: storage }); //파일 업로드 모듈
 
 var connection = mysql.createConnection({
 	host     : '127.0.0.1',
@@ -21,8 +33,12 @@ app.use(session({
 	saveUninitialized: true
 }));
 
+// 정적 폴더 지정
 app.use(express.static('public'));
-app.use('/static', express.static(__dirname + '/public'));
+app.use(express.static('uploads'));
+app.use('/public', express.static(__dirname + '/public'));
+app.use('/uploads', express.static(__dirname + '/uploads'));
+
 app.use(bodyParser.urlencoded({extended : true}));
 app.use(bodyParser.json());
 
@@ -50,7 +66,8 @@ app.use('/', function(request, response, next) {
 	if ( request.session.loggedin == true || request.url == "/register"
 	 || request.url == "/minibar" || request.url == "/community" || request.url == "/insert"
 	 || String(request.url).includes("/search") || String(request.url).includes("/show")
-	 || String(request.url).includes("/notice") || String(request.url).includes("/login")) {
+	 || String(request.url).includes("/notice") || String(request.url).includes("/login")
+	 || String(request.url).includes("/edit")) {
     	next();
 	}
 	else {
@@ -202,10 +219,15 @@ app.get('/show/:name', restrict, function (request, response) { // 칵테일 레
 		var cname = request.params.name;
 		var sql = 'SELECT * FROM Recipes WHERE name = ?';
 		var sql_like = 'SELECT cname FROM Likes WHERE uname=? AND cname=?';
+		var sql_img = 'SELECT img FROM Cocktails WHERE name = ?';
 
         connection.query(sql, [ cname ], function (error, results) {
 			connection.query(sql_like, [ uname, cname ], function (error, result) {
-				response.send(ejs.render(data, { cdata: results, isLike: result, logio: is_logged_in}));
+				connection.query(sql_img, [ cname ], function (error, url) {
+					response.send(ejs.render(data, {
+						cdata: results, img: url, isLike: result, logio: is_logged_in
+					}));
+				});
 			});
         });
     });
@@ -252,11 +274,30 @@ app.get('/edit/:name', function (request, response) { // 칵테일 레시피 정
 		else {
 			is_logged_in = false;
 		}
-        connection.query('SELECT * FROM Recipes WHERE name = ?', [ request.param('name') ],
-		 function (error, results) {
-            response.send(ejs.render(data, { cdata: results, logio: is_logged_in }));
+		var sql_recipe = 'SELECT * FROM Recipes WHERE name = ?';
+		var sql_img = 'SELECT img FROM Cocktails WHERE name = ?';
+		var cname = request.params.name;
+
+        connection.query(sql_img, [ cname ], function (error, result) {
+			console.log(result[0]);
+			connection.query(sql_recipe, [ cname ], function (error, results) {
+				response.send(ejs.render(data, { cdata: results, img: result, logio: is_logged_in }));
+			});
         });
     });
+});
+app.post('/edit/:name/img_upload', upload.single('fileupload'), function (request, response) {
+	console.log(request.file);
+	const upload_file = '/uploads/'+ request.file.filename;
+	console.log('업로드: ' + upload_file);
+	console.log(upload);
+
+	var sql = 'UPDATE Cocktails SET img = ? WHERE name = ?';
+	var cname = request.params.name;
+
+	connection.query(sql, [upload_file, cname], function (error, results) {
+		response.redirect('./');
+	});
 });
 app.post('/edit/:name/add', function (request, response) { // 칵테일 새재료 추가
 	var sql = 'INSERT INTO Recipes (name, igdcategory, amount) VALUES (?, ?, ?)';
@@ -355,7 +396,7 @@ app.get('/community', restrict, function(request, response) {
 		else
 			is_logged_in = false;
 
-		var sql = 'SELECT DATE_FORMAT(pdate, "%Y.%m.%d / %h:%i %p") as pdate, id, title, writer FROM Compost';
+		var sql = 'SELECT DATE_FORMAT(pdate, "%Y.%m.%d | %h:%i %p") as pdate, id, title, writer FROM Compost';
 		connection.query(sql, function (error, results) {
 			response.send(ejs.render(data, { post: results, logio: is_logged_in }));
 		});
@@ -369,7 +410,7 @@ app.get('/community/read/:id', restrict, function(request, response) {
 		else
 			is_logged_in = false;
 
-		var sql = 'SELECT DATE_FORMAT(pdate, "%Y.%m.%d / %h:%i %p") as pdate, id, title, writer, content FROM Compost WHERE id=?'
+		var sql = 'SELECT DATE_FORMAT(pdate, "%Y.%m.%d | %h:%i %p") as pdate, id, title, writer, content FROM Compost WHERE id=?'
 		var pid = request.params.id;
 
 		connection.query(sql, [pid], function (error, results) {
@@ -417,7 +458,7 @@ app.get('/notice', function(request, response) {
 		else
 			is_logged_in = false;
 
-		var sql = 'SELECT DATE_FORMAT(pdate, "%Y.%m.%d / %h:%i %p") as pdate, id, title FROM Notice';
+		var sql = 'SELECT DATE_FORMAT(pdate, "%Y.%m.%d | %h:%i %p") as pdate, id, title FROM Notice';
 		connection.query(sql, function (error, results) {
 			response.send(ejs.render(data, { post: results, logio: is_logged_in }));
 		});
@@ -431,7 +472,7 @@ app.get('/notice/read/:id', function(request, response) {
 		else
 			is_logged_in = false;
 
-		var sql = 'SELECT DATE_FORMAT(pdate, "%Y.%m.%d / %h:%i %p") as pdate, id, title, content FROM Notice WHERE id=?'
+		var sql = 'SELECT DATE_FORMAT(pdate, "%Y.%m.%d | %h:%i %p") as pdate, id, title, content FROM Notice WHERE id=?'
 		var pid = request.params.id;
 
 		connection.query(sql, [pid], function (error, results) {

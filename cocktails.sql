@@ -2,7 +2,8 @@ CREATE TABLE Cocktails (
     id int NOT NULL auto_increment primary key,
     name varchar(20) NOT NULL unique key,
     enname varchar(20) NOT NULL,
-    method varchar(10) NOT NULL
+    method varchar(10) NOT NULL,
+    img VARCHAR(100)
 );
 
 CREATE TABLE Ingredients (

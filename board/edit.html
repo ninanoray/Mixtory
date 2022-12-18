@@ -4,7 +4,13 @@
     <meta charset='utf-8'>
     <title>MIXtory</title>
     <meta name='viewport' content='width=device-width, initial-scale=1'>
-    <link rel='stylesheet' type='text/css' media='screen' href='../search.css'>
+    <link rel='stylesheet' type='text/css' media='screen' href='/public/search.css'>
+    <script>
+        function upload_file(value) {
+            const upload_name = document.getElementById('upload_name');
+            upload_name.setAttribute('value', value);
+        }
+    </script>
 </head>
 <body>
     <header>
@@ -64,9 +70,26 @@
                                 <td class="center_cell"><button class="btn_edit"><a href="/show/<%= cdata[0].name %>">완료</a></button></td>
                             </form>
                         </tr>
+                        <tr>
+                            <form method="post" action="/edit/<%= cdata[0].name %>/img_upload" enctype="multipart/form-data"></form>
+                                <td class="center_cell" colspan="3">
+                                    <div class="filebox">
+                                        <input class="upload-name" id="upload_name" placeholder="첨부파일">
+                                        <label for="fileupload">업로드</label>
+                                        <input type="file" id="fileupload" name="fileupload" onchange="upload_file(this.value)">
+                                    </div>
+                                </td>
+                                <td class="center_cell">
+                                    <input type="submit" value="올리기">
+                                </td>
+                            </form>                      
+                        </tr>
 					</tbody>
 				</table>
             </form>
+            <% if (img[0].img) { %>
+                <img src="<%= img[0].img %>" alt="image 출력" width="300"/>
+            <% } %>
         </section>
     </main>
     <footer>

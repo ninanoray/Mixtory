@@ -303,6 +303,42 @@ main {
         margin-left: 10px;
     }
 
+    .filebox {
+        width: 100%;
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+    }
+    .filebox .upload-name {
+        width: 60%;
+        height: 50px;
+        padding: 0 10px;
+        margin: 10px 20px 10px 10px;
+        border: none;
+        border-bottom: 1px solid var(--main);
+        background-color: transparent;
+        color: var(--main);
+    }
+    .filebox label {
+        width: 160px;
+        height: 50px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin: 10px 0px 10px 10px;
+        color: var(--bgcolor);
+        background-color: var(--main);
+        cursor: pointer;
+    }
+    .filebox input[type="file"] {
+        position: absolute;
+        width: 0;
+        height: 0;
+        padding: 0;
+        overflow: hidden;
+        border: 0;
+    }
+
 .right_bottom {
     margin: auto 0 0 auto;
 }

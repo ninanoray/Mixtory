@@ -4,7 +4,7 @@
     <meta charset='utf-8'>
     <title>MIXtory</title>
     <meta name='viewport' content='width=device-width, initial-scale=1'>
-    <link rel='stylesheet' type='text/css' media='screen' href='../search.css'>
+    <link rel='stylesheet' type='text/css' media='screen' href='/public/search.css'>
 </head>
 <body>
     <header>
@@ -41,6 +41,11 @@
                     <button class="btn_heart_selected"><a href="/dislike/<%= cdata[0].name %>">❤</a></button>
                 <% } else { %>
                     <button class="btn_heart"><a href="/like/<%= cdata[0].name %>">❤</a></button>
+                <% } %>
+            </div>
+            <div class="center_div width_parent">
+                <% if (img[0].img) { %>
+                    <img src="<%= img[0].img %>" alt="image 출력" width="300"/>
                 <% } %>
             </div>
             <table width="100%" border="1">
