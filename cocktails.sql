@@ -1,15 +1,9 @@
-CREATE TABLE User {
-    id int NOT NULL auto_increment primary key,
-    username varchar(50) NOT NULL,
-    password varchar(255) NOT NULL,
-    email varchar(100) NOT NULL
-};
-
 CREATE TABLE Cocktails (
     id int NOT NULL auto_increment primary key,
     name varchar(20) NOT NULL unique key,
     enname varchar(20) NOT NULL,
-    method varchar(10) NOT NULL
+    method varchar(10) NOT NULL,
+    img VARCHAR(100)
 );
 
 CREATE TABLE Ingredients (
@@ -34,6 +28,7 @@ CREATE TABLE Likes (
     cname VARCHAR(20) NOT NULL,
     uname VARCHAR(50) NOT NULL
 );
+ALTER TABLE Likes ADD UNIQUE INDEX (cname, uname); //조합 중복안되게함
 
 
 

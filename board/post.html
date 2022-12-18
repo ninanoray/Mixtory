@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8'>
+    <title>MIXtory</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <link rel='stylesheet' type='text/css' media='screen' href='/public/search.css'>
+</head>
+<body>
+    <header>
+        <section>
+            <nav>
+                <div class="img_logo">
+                    <a href="/">MIXtory</a>
+                </div>
+                <div class="nav_items">
+                  <ul>
+                    <li><a href="/search">칵테일 검색</a></li>
+                    <li><a href="/minibar">나만의 미니바</a></li>
+                    <li><a href="/community">커뮤니티</a></li>
+                    <li><a href="/notice">공지사항</a></li>
+                  </ul>
+                </div>
+                <div class="login">
+                    <% if(logio){ %>
+                        <a href="/logout">로그아웃</a>
+                    <% } else { %>
+                        <a href="/login">로그인</a>
+                    <% } %>
+                </div>
+            </nav>
+        </section>
+    </header>
+    <main>
+        <section class="post">
+            <div class="title">
+                <% if(community) { %>
+                    <h1>커뮤니티</h1>
+                <% } else { %>
+                    <h1>공지사항</h1>
+                <% } %>
+            </div>
+            <div class="post">
+                <div class="post_titlebar">
+                    <p>No.<%= post[0].id %></p>
+                    <p><%= post[0].pdate %></p>
+                </div>
+                <div class="post_titlebar">
+                    <h1><%= post[0].title %></h1>
+                    <% if(community) { %>
+                        <h3>작성자 | <%= post[0].writer %></h3>
+                    <% } else { %>
+                        <h3>작성자 | 관리자</h3>
+                    <% } %>
+                </div>
+                <div class="line"></div>
+
+                <p class="post_content"><%= post[0].content %></p>
+            </div>
+            <div class="right_bottom">
+                <button class="btn_edit">
+                    <a href="javascript:history.back()">뒤로가기</a>
+                </button>
+            </div>
+        </section>
+    </main>
+    <footer>
+        <section>
+            <div class="line width_parent"></div>
+            <p>MIXtory</p>
+            <p>ninanoray</p>
+        </section>
+    </footer>
+</body>
